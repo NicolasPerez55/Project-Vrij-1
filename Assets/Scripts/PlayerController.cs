@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Components & Prefabs")]
     public Rigidbody2D rb;
     public BoxCollider2D col;
     [SerializeField] private LayerMask whatIsGround;
-
     public SceneController scene;
 
+    [Space, Header("Movement Modifiers")]
     public float speed;
     private float moveInput;
 
     // Jump-related variables
+    [Space, Header("Jump Modifiers")]
     public float jumpForce;
     public float coyote;
     private float coyoteTime = 0.15f;
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private float jumpBufferTime = 0.15f;
     private float jumpCut = 0.4f;
 
+    [Space, Header("Meta")]
     public int characterType = 0; //1 = real player, 2 = graffiti player
     //public int currentGraffitiType = 1; //1 = platform, 2 = warp
     private void Update()

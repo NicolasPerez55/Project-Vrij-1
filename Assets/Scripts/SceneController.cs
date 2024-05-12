@@ -7,11 +7,13 @@ using UnityEngine.UI;
 public class SceneController : MonoBehaviour
 {
     //The two players (real and graffiti), and the camera
+    [Header ("Object Prefabs")]
     public GameObject cameraPoint;
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
 
     //A bunch of UI stuff
+    [Header("UI Prefabs")]
     [SerializeField] private TextMeshProUGUI swapText;
     [SerializeField] private TextMeshProUGUI graffitiText;
     [SerializeField] private TextMeshProUGUI selectionText;
@@ -36,30 +38,34 @@ public class SceneController : MonoBehaviour
     //public GameObject startWarp;
 
     //[SerializeField] private float platformPlaceOffset = 2;
-
+    [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
     public float cameraOffset = 2;
-
-    public float defaultSwapCooldown = 1.2f;
-    public float swapCooldown = 0;
-    public bool mustBeGroundedToSwap = false; //Enable to forbid swapping in the air
-
-    public float defaultGraffitiCooldown = 1f;
-    public float graffitiCooldown = 0;
-
-    //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
-    public List<GameObject> warps = new List<GameObject>();
-
-    public float timer = 0;
-    public bool gameRunning = false;
-    public bool gameHasStarted = false;
-    public bool gameWon = false;
-    public float bestTime = 0;
 
     //These are used in checking collision so you can't swap characters if you would end up inside collision
     //NOTE: This doesn't actually work I think. It doesn't matter much currently, you snap out of collision when you swap inside of it anyways
     [SerializeField] private LayerMask toGraffiti;
     [SerializeField] private LayerMask toReal;
+
+    [Space, Header("Swapping")]
+    public float defaultSwapCooldown = 1.2f;
+    public float swapCooldown = 0;
+    public bool mustBeGroundedToSwap = false; //Enable to forbid swapping in the air
+
+    [Space, Header("Graffiti-ing")]
+    public float defaultGraffitiCooldown = 1f;
+    public float graffitiCooldown = 0;
+
+    [Space, Header("World")]
+    //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
+    public List<GameObject> warps = new List<GameObject>();
+
+    [Space, Header("Meta")]
+    public float timer = 0;
+    public bool gameRunning = false;
+    public bool gameHasStarted = false;
+    public bool gameWon = false;
+    public float bestTime = 0;
 
     void Start()
     {
