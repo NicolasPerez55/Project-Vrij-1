@@ -1227,6 +1227,7 @@ MonoBehaviour:
   cameraOffset: 2
   defaultSwapCooldown: 0.7
   swapCooldown: 0
+  mustBeGroundedToSwap: 0
   defaultGraffitiCooldown: 1
   graffitiCooldown: 0
   warps: []
@@ -3864,7 +3865,7 @@ Transform:
   m_GameObject: {fileID: 2079150673}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.77, y: -3.13, z: 0.036388483}
+  m_LocalPosition: {x: -4.73, y: -3.56, z: 0.036388483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
