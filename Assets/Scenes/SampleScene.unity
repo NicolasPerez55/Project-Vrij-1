@@ -1225,6 +1225,12 @@ MonoBehaviour:
   controlIndicator: {fileID: 2017507848}
   playerActive: 1
   cameraOffset: 2
+  toGraffiti:
+    serializedVersion: 2
+    m_Bits: 64
+  toReal:
+    serializedVersion: 2
+    m_Bits: 128
   defaultSwapCooldown: 0.7
   swapCooldown: 0
   mustBeGroundedToSwap: 0
@@ -1236,12 +1242,6 @@ MonoBehaviour:
   gameHasStarted: 0
   gameWon: 0
   bestTime: 0
-  toGraffiti:
-    serializedVersion: 2
-    m_Bits: 64
-  toReal:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!4 &792710226
 Transform:
   m_ObjectHideFlags: 0
