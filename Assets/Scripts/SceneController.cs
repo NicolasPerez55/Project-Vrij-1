@@ -40,6 +40,7 @@ public class SceneController : MonoBehaviour
     //[SerializeField] private float platformPlaceOffset = 2;
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
+    [Tooltip("The camera's position, the higher the number the higher above the player")]
     public float cameraOffset = 2;
 
     //These are used in checking collision so you can't swap characters if you would end up inside collision
@@ -205,6 +206,11 @@ public class SceneController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void getPaintcan()
+    {
+
     }
 
     public void pauseGame()

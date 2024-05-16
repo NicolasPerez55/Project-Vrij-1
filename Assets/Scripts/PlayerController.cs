@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private float jumpCut = 0.4f;
 
     [Space, Header("Meta")]
+    [Tooltip("1 = Physical Form, 2 = Graffiti Form")]
     public int characterType = 0; //1 = real player, 2 = graffiti player
     //public int currentGraffitiType = 1; //1 = platform, 2 = warp
     private void Update()
