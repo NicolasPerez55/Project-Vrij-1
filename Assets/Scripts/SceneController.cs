@@ -11,6 +11,7 @@ public class SceneController : MonoBehaviour
     public GameObject cameraPoint;
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
+    public GameObject paintsprayGate;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -26,18 +27,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private TextMeshProUGUI controlIndicator;
 
-    //[SerializeField] private Sprite paintcan0;
-    //[SerializeField] private Sprite paintcan1;
-    //[SerializeField] private Sprite paintcan2;
-    //[SerializeField] private Sprite paintcan3;
-    //[SerializeField] private Sprite paintcan4;
 
-    //public GameObject graffitiPlatformPrefab;
-    //public GameObject graffitiWarpPrefab;
-
-    //public GameObject startWarp;
-
-    //[SerializeField] private float platformPlaceOffset = 2;
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
     [Tooltip("The camera's position, the higher the number the higher above the player")]
@@ -51,11 +41,13 @@ public class SceneController : MonoBehaviour
     [Space, Header("Swapping")]
     public float defaultSwapCooldown = 1.2f;
     public float swapCooldown = 0;
-    public bool mustBeGroundedToSwap = false; //Enable to forbid swapping in the air
+    [Tooltip("If enabled, player can only swap forms while on the ground")]
+    public bool groundedSwap = false; //Enable to forbid swapping in the air
 
     [Space, Header("Graffiti-ing")]
     public float defaultGraffitiCooldown = 1f;
     public float graffitiCooldown = 0;
+    public bool canGraffiti = false;
 
     [Space, Header("World")]
     //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
@@ -178,7 +170,7 @@ public class SceneController : MonoBehaviour
         bool collisionCheck;
         if (playerActive == 1) //Swapping to graffiti player
         {
-            if (mustBeGroundedToSwap == false || (mustBeGroundedToSwap && realPlayer.IsGrounded()))
+            if (groundedSwap == false || (groundedSwap && realPlayer.IsGrounded()))
             {
                 collisionCheck = Physics.CheckBox(realPlayer.col.bounds.center, graffitiPlayer.col.bounds.size * 0.5f, Quaternion.identity, toGraffiti);
                 if (!collisionCheck)
@@ -193,7 +185,7 @@ public class SceneController : MonoBehaviour
         }
         else if (playerActive == 2) //Swapping to real player
         {
-            if (mustBeGroundedToSwap == false || (mustBeGroundedToSwap && graffitiPlayer.IsGrounded()))
+            if (groundedSwap == false || (groundedSwap && graffitiPlayer.IsGrounded()))
             {
                 collisionCheck = Physics.CheckBox(graffitiPlayer.col.bounds.center, realPlayer.col.bounds.size * 0.5f, Quaternion.identity, toReal);
                 if (!collisionCheck)
@@ -208,9 +200,12 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    public void getPaintcan()
+    //Triggered when the player picks up the paint spray
+    public void getPaintspray()
     {
-
+        paintsprayGate.SetActive(true);
+        paintcanUI.gameObject.SetActive(true);
+        canGraffiti = true;
     }
 
     public void pauseGame()

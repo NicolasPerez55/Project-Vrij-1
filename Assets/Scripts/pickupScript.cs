@@ -9,16 +9,25 @@ public class pickupScript : MonoBehaviour
     public BoxCollider2D collider;
 
     public bool disabled = false;
+    public string pickupType = "Paint Spray";
 
     public void collided()
     {
-        Debug.Log("paintcan triggered");
         if (disabled == false)
         {
-            collider.isTrigger = true;
-            renderer.enabled = false;
-            disabled = true;
-            scene.getPaintcan();
+            switch (pickupType)
+            {
+                case "Paint Spray":
+                    {
+                        collider.isTrigger = true;
+                        renderer.enabled = false;
+                        disabled = true;
+                        scene.getPaintspray();
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
     }
 }

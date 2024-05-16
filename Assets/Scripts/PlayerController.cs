@@ -68,7 +68,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        switch (collision.gameObject.layer)
+        {
+            case 10:
+                if (characterType == 1)
+                    collision.gameObject.GetComponent<pickupScript>().collided();
+                break;
+            default:
+                break;
+        }
     }
 
     // Checks if the player can jump and how high they jump
