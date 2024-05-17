@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float jumpBuffer;
     private float jumpBufferTime = 0.15f;
     private float jumpCut = 0.4f;
+    public float floorDetectionSize = 0.1f;
 
     [Space, Header("Meta")]
     [Tooltip("1 = Physical Form, 2 = Graffiti Form")]
@@ -126,6 +127,6 @@ public class PlayerController : MonoBehaviour
     // returns true if grounded, false if not grounded.
     public bool IsGrounded()
     {
-        return Physics2D.BoxCast((col.bounds.center), col.bounds.size * 0.1f, 0f, Vector2.down, 1, whatIsGround);
+        return Physics2D.BoxCast((col.bounds.center), col.bounds.size * floorDetectionSize, 0f, Vector2.down, 1, whatIsGround);
     }
 }
