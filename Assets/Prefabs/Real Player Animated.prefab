@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8129939171161565547}
   - component: {fileID: 4222462758552476104}
   m_Layer: 9
-  m_Name: Player Animated
+  m_Name: Real Player Animated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4513930274660299909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.67, y: -3.18, z: 0.0364}
+  m_LocalPosition: {x: -4.67, y: -2.126, z: 0.0364}
   m_LocalScale: {x: 3.3865232, y: 3.3865232, z: 3.3865232}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -143,7 +143,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.007072665, y: -0.0004171431}
+  m_Offset: {x: -0.0070726573, y: 0.01271072}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -154,7 +154,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.34164447, y: 0.8438775}
+  m_Size: {x: 0.34164447, y: 0.81762177}
   m_EdgeRadius: 0
 --- !u!50 &8129939171161565547
 Rigidbody2D:
