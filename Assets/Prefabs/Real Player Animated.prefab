@@ -55,6 +55,7 @@ MonoBehaviour:
     m_Bits: 128
   scene: {fileID: 0}
   speed: 5
+  facingDirection: 1
   jumpForce: 5
   coyote: 0.2
   jumpBuffer: 0.2

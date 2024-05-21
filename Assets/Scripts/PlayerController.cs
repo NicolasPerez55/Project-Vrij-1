@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Movement Modifiers")]
     public float speed;
     private float moveInput;
+    [SerializeField] private float facingDirection = -1; //west = -1, east = 1
 
     // Jump-related variables
     [Space, Header("Jump Modifiers")]
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        changeFacingDirection();
     }
 
     //Boosts the player up a bit, stalling them briefly in the air. Was used when placing a platform in the air in my original demo, keeping it in for now -Nico
@@ -128,5 +130,23 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         return Physics2D.BoxCast((col.bounds.center), col.bounds.size * floorDetectionSize, 0f, Vector2.down, 1, whatIsGround);
+    }
+
+    public void changeFacingDirection()
+    {
+        if (facingDirection != 1 && moveInput > 0)
+        {
+            facingDirection = 1;
+            Vector2 localscale = transform.localScale;
+            localscale.x *= -1f;
+            transform.localScale = localscale;
+        }
+        else if (facingDirection != -1 && moveInput < 0)
+        {
+            facingDirection = -1;
+            Vector2 localscale = transform.localScale;
+            localscale.x *= -1f;
+            transform.localScale = localscale;
+        }
     }
 }
