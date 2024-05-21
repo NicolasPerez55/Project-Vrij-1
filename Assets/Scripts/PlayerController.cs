@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,11 +10,12 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D col;
     [SerializeField] private LayerMask whatIsGround;
     public SceneController scene;
+    [SerializeField] Animator animator;
 
     [Space, Header("Movement Modifiers")]
     public float speed;
     private float moveInput;
-    [SerializeField] private float facingDirection = -1; //west = -1, east = 1
+    private bool facingRight = true;
 
     // Jump-related variables
     [Space, Header("Jump Modifiers")]
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
+        AnimatorMovement();
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
         changeFacingDirection();
     }
@@ -94,6 +97,7 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded() && Mathf.Abs(rb.velocity.y) < 0.01)
         {
             coyote = coyoteTime;
+            animator.SetBool("isJumping", false);
         }
 
         // When the player presses jump in the air, they get a 0.15s window of being early with jumping
@@ -107,6 +111,7 @@ public class PlayerController : MonoBehaviour
         if (jumpBuffer > 0 && coyote > 0)
         {
             Debug.Log("JUMPED");
+            animator.SetBool("isJumping", true);
             rb.velocity = Vector2.up * jumpForce;
             coyote = 0;
             jumpBuffer = 0;
@@ -134,19 +139,22 @@ public class PlayerController : MonoBehaviour
 
     public void changeFacingDirection()
     {
-        if (facingDirection != 1 && moveInput > 0)
+        if (!facingRight && moveInput > 0 || facingRight && moveInput < 0)
         {
-            facingDirection = 1;
+            facingRight = !facingRight;
             Vector2 localscale = transform.localScale;
             localscale.x *= -1f;
             transform.localScale = localscale;
         }
-        else if (facingDirection != -1 && moveInput < 0)
+    }
+
+    void AnimatorMovement()
+    {
+        animator.SetFloat("xVelocity", Mathf.Abs(moveInput));
+        animator.SetFloat("yVelocity", rb.velocity.y);
+        if (rb.velocity.y < 0 && animator.GetBool("isJumping") == false)
         {
-            facingDirection = -1;
-            Vector2 localscale = transform.localScale;
-            localscale.x *= -1f;
-            transform.localScale = localscale;
+            animator.SetBool("isJumping", true);
         }
     }
 }
