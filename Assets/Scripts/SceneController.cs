@@ -21,6 +21,7 @@ public class SceneController : MonoBehaviour
     public GameObject fullHeart;
     public MinigameManager coupleManager;
     public GameObject drawingMinigameCouple;
+    [SerializeField] private GameObject graffitiTutorialNote;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -66,6 +67,7 @@ public class SceneController : MonoBehaviour
     [Space, Header("World")]
     //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
     public List<GameObject> warps = new List<GameObject>();
+    private bool coupleMinigameCompleted = false;
 
     [Space, Header("Meta")]
     public float timer = 0;
@@ -126,7 +128,7 @@ public class SceneController : MonoBehaviour
 
     public void makeGraffiti() //1 = platform, 2 = warp
     {
-        if (playerActive == 1 && graffitiCooldown <= 0 && playerNearGraffiti) //Player is in the real world and can graffiti
+        if (playerActive == 1 && graffitiCooldown <= 0 && playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
         {
             coupleManager.StartMinigameOne();
             playerInMinigame = true;
@@ -139,7 +141,7 @@ public class SceneController : MonoBehaviour
     public void isPlayerNearGraffitiSpot()
     {
         //player is close enough
-        if (Vector2.Distance(realPlayer.transform.position, graffitiSpot.transform.position) <= proximityThreshold && playerActive == 1)
+        if (Vector2.Distance(realPlayer.transform.position, graffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
         {
             playerNearGraffiti = true;
             sprayCanOffUI.gameObject.SetActive(false);
@@ -164,6 +166,8 @@ public class SceneController : MonoBehaviour
         graffitiSpot.SetActive(false);
         playerInMinigame = false;
         cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 3f;
+        coupleMinigameCompleted = true;
+        graffitiTutorialNote.SetActive(false);
     }
 
     //Was used by the warps in my demo, I'm keeping it in since we may be able to reuse it for area transitions or similar -Nico

@@ -1,0 +1,8 @@
+-You can turn around while the game is paused
+
+-Resume button in pause screen is off-center
+
+-Player automatically jumps when starting level and when first switching forms (even in mid-air)
+
+-Player can't jump if they are more than 50% leaning past the edge of a platform (ground detection 
+ happens only in the middle of the character)
