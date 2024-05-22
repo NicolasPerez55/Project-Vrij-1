@@ -14,7 +14,6 @@ public class GraffitiScript : MonoBehaviour
         scene = FindFirstObjectByType<SceneController>();
     }
 
-
     void Update()
     {
         

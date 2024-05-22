@@ -12,6 +12,7 @@ public class SceneController : MonoBehaviour
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
     public GameObject paintsprayGate;
+    public GameObject graffitiSpot;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -22,7 +23,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bestTimeText;
     [SerializeField] private TextMeshProUGUI menuText;
     [SerializeField] private TextMeshProUGUI cheekyText;
-    [SerializeField] private Image paintcanUI;
+    [SerializeField] private Image sprayCanOnUI;
+    [SerializeField] private Image sprayCanOffUI;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
     [SerializeField] private TextMeshProUGUI controlIndicator;
@@ -43,11 +45,14 @@ public class SceneController : MonoBehaviour
     public float swapCooldown = 0;
     [Tooltip("If enabled, player can only swap forms while on the ground")]
     public bool groundedSwap = false; //Enable to forbid swapping in the air
+    private bool hasShiftedBefore = false;
 
     [Space, Header("Graffiti-ing")]
     public float defaultGraffitiCooldown = 1f;
     public float graffitiCooldown = 0;
     public bool canGraffiti = false;
+    public bool playerNearGraffiti = false;
+    public float proximityThreshold = 1f; //How close player must be to graffiti to be able to interact with it
 
     [Space, Header("World")]
     //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
@@ -79,6 +84,7 @@ public class SceneController : MonoBehaviour
             if (playerActive == 1)
             {
                 cameraPoint.transform.position = new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset);
+                if (canGraffiti) isPlayerNearGraffitiSpot();
             }
             else if (playerActive == 2)
             {
@@ -107,9 +113,29 @@ public class SceneController : MonoBehaviour
 
     public void makeGraffiti(int type) //1 = platform, 2 = warp
     {
-        if (playerActive == 1 && graffitiCooldown <= 0) //Player is in the real world and can graffiti
+        if (playerActive == 1 && graffitiCooldown <= 0 && playerNearGraffiti) //Player is in the real world and can graffiti
         {
             
+        }
+    }
+
+    //NOTE! This is currently very hardcoded and only for the one puzzle, tis a Wizard-Of-Oz setup for the demo, to be changed later
+    public void isPlayerNearGraffitiSpot()
+    {
+        //player is close enough
+        if (Vector2.Distance(realPlayer.transform.position, graffitiSpot.transform.position) <= proximityThreshold && playerActive == 1)
+        {
+            playerNearGraffiti = true;
+            sprayCanOffUI.gameObject.SetActive(false);
+            sprayCanOnUI.gameObject.SetActive(true);
+            selectionText.text = "[e] Tag!";
+        }
+        else if (playerActive == 1)
+        {
+            playerNearGraffiti = false;
+            sprayCanOffUI.gameObject.SetActive(true);
+            sprayCanOnUI.gameObject.SetActive(false);
+            selectionText.text = "Can't Tag";
         }
     }
 
@@ -180,6 +206,10 @@ public class SceneController : MonoBehaviour
                     realPlayer.gameObject.SetActive(false);
                     playerActive = 2;
                     swapCooldown = defaultSwapCooldown;
+                    if (hasShiftedBefore == false) swapText.gameObject.SetActive(true);
+                    sprayCanOffUI.gameObject.SetActive(false);
+                    sprayCanOnUI.gameObject.SetActive(false);
+                    selectionText.gameObject.SetActive(false);
                 }
             }
         }
@@ -195,6 +225,11 @@ public class SceneController : MonoBehaviour
                     graffitiPlayer.gameObject.SetActive(false);
                     playerActive = 1;
                     swapCooldown = defaultSwapCooldown;
+                    if (canGraffiti)
+                    {
+                        isPlayerNearGraffitiSpot();
+                        selectionText.gameObject.SetActive(true);
+                    }
                 }
             }
         }
@@ -204,7 +239,8 @@ public class SceneController : MonoBehaviour
     public void getPaintspray()
     {
         paintsprayGate.SetActive(true);
-        paintcanUI.gameObject.SetActive(true);
+        sprayCanOffUI.gameObject.SetActive(true);
+        selectionText.gameObject.SetActive(true);
         canGraffiti = true;
     }
 
@@ -263,11 +299,20 @@ public class SceneController : MonoBehaviour
             gameHasStarted = true;
             timer = 0;
             resumeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Resume";
+            if (canGraffiti)
+            {
+                selectionText.gameObject.SetActive(true);
+                isPlayerNearGraffitiSpot();
+            }
+            if (hasShiftedBefore)
+            {
+                swapText.gameObject.SetActive(true);
+            }
             //paintcanUI.gameObject.SetActive(true);
             //selectionText.gameObject.SetActive(true);
-            swapText.gameObject.SetActive(true);
+            //swapText.gameObject.SetActive(true);
             //graffitiText.gameObject.SetActive(true);
-            timerText.gameObject.SetActive(true);
+            //timerText.gameObject.SetActive(true);
             //controlIndicator.gameObject.SetActive(true);
 
         }
@@ -295,7 +340,8 @@ public class SceneController : MonoBehaviour
         graffitiPlayer.gameObject.SetActive(false);
         playerActive = 1;
 
-        paintcanUI.gameObject.SetActive(false);
+        sprayCanOffUI.gameObject.SetActive(false);
+        sprayCanOnUI.gameObject.SetActive(false);
         selectionText.gameObject.SetActive(false);
         controlIndicator.gameObject.SetActive(false);
 
