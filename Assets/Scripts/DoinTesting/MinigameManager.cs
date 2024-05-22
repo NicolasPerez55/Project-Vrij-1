@@ -5,6 +5,7 @@ using UnityEngine;
 public class MinigameManager : MonoBehaviour
 {
     [SerializeField] GameObject paintDoneObj, MinigameObj;
+    [SerializeField] SceneController scene;
 
     public static MinigameManager Instance { get; private set; }
 
@@ -31,5 +32,6 @@ public class MinigameManager : MonoBehaviour
     {
         paintDoneObj.SetActive(false);
         MinigameObj.SetActive(false);
+        scene.couplePuzzleDone();
     }
 }

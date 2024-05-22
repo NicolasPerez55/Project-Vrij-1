@@ -12,7 +12,15 @@ public class SceneController : MonoBehaviour
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
     public GameObject paintsprayGate;
+    //Couple puzzle stuff
     public GameObject graffitiSpot;
+    public GameObject couple;
+    public Sprite happyCouple;
+    public GameObject graffitiBlockade;
+    public GameObject brokenHeart;
+    public GameObject fullHeart;
+    public MinigameManager coupleManager;
+    public GameObject drawingMinigameCouple;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -53,6 +61,7 @@ public class SceneController : MonoBehaviour
     public bool canGraffiti = false;
     public bool playerNearGraffiti = false;
     public float proximityThreshold = 1f; //How close player must be to graffiti to be able to interact with it
+    private bool playerInMinigame = false;
 
     [Space, Header("World")]
     //List of all warp points, IE places the player may be teleported to. Could be used if say we want the player to enter a building through a door or similar
@@ -81,7 +90,7 @@ public class SceneController : MonoBehaviour
             timerText.text = "Time: " + (int)timer;
 
             //Camera position update
-            if (playerActive == 1)
+            if (playerActive == 1 && playerInMinigame == false)
             {
                 cameraPoint.transform.position = new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset);
                 if (canGraffiti) isPlayerNearGraffitiSpot();
@@ -108,14 +117,21 @@ public class SceneController : MonoBehaviour
             if (graffitiCooldown == 0) graffitiText.text = "Tag ready! [E]";
             else graffitiText.text = "Recharge in " + (int)graffitiCooldown;
             
+            if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false)
+            {
+                makeGraffiti();
+            }
         }
     }
 
-    public void makeGraffiti(int type) //1 = platform, 2 = warp
+    public void makeGraffiti() //1 = platform, 2 = warp
     {
         if (playerActive == 1 && graffitiCooldown <= 0 && playerNearGraffiti) //Player is in the real world and can graffiti
         {
-            
+            coupleManager.StartMinigameOne();
+            playerInMinigame = true;
+            cameraPoint.transform.position = new Vector2(drawingMinigameCouple.transform.position.x, drawingMinigameCouple.transform.position.y + cameraOffset);
+            cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 5f;
         }
     }
 
@@ -137,6 +153,17 @@ public class SceneController : MonoBehaviour
             sprayCanOnUI.gameObject.SetActive(false);
             selectionText.text = "Can't Tag";
         }
+    }
+
+    public void couplePuzzleDone()
+    {
+        fullHeart.SetActive(true);
+        couple.GetComponent<SpriteRenderer>().sprite = happyCouple;
+        couple.GetComponent<BoxCollider2D>().isTrigger = true;
+        graffitiBlockade.SetActive(false);
+        graffitiSpot.SetActive(false);
+        playerInMinigame = false;
+        cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 3f;
     }
 
     //Was used by the warps in my demo, I'm keeping it in since we may be able to reuse it for area transitions or similar -Nico
@@ -166,6 +193,11 @@ public class SceneController : MonoBehaviour
             graffitiPlayer.gameObject.SetActive(false);
             playerActive = 1;
             swapCooldown = 2.5f;
+            if (canGraffiti)
+            {
+                isPlayerNearGraffitiSpot();
+                selectionText.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -193,42 +225,45 @@ public class SceneController : MonoBehaviour
     //Swaps between the real and graffiti player
     public void switchCharacter()
     {
-        bool collisionCheck;
-        if (playerActive == 1) //Swapping to graffiti player
+        if (playerInMinigame == false)
         {
-            if (groundedSwap == false || (groundedSwap && realPlayer.IsGrounded()))
+            bool collisionCheck;
+            if (playerActive == 1) //Swapping to graffiti player
             {
-                collisionCheck = Physics.CheckBox(realPlayer.col.bounds.center, graffitiPlayer.col.bounds.size * 0.5f, Quaternion.identity, toGraffiti);
-                if (!collisionCheck)
+                if (groundedSwap == false || (groundedSwap && realPlayer.IsGrounded()))
                 {
-                    graffitiPlayer.transform.position = realPlayer.col.bounds.center;
-                    graffitiPlayer.gameObject.SetActive(true);
-                    realPlayer.gameObject.SetActive(false);
-                    playerActive = 2;
-                    swapCooldown = defaultSwapCooldown;
-                    if (hasShiftedBefore == false) swapText.gameObject.SetActive(true);
-                    sprayCanOffUI.gameObject.SetActive(false);
-                    sprayCanOnUI.gameObject.SetActive(false);
-                    selectionText.gameObject.SetActive(false);
+                    collisionCheck = Physics.CheckBox(realPlayer.col.bounds.center, graffitiPlayer.col.bounds.size * 0.5f, Quaternion.identity, toGraffiti);
+                    if (!collisionCheck)
+                    {
+                        graffitiPlayer.transform.position = realPlayer.col.bounds.center;
+                        graffitiPlayer.gameObject.SetActive(true);
+                        realPlayer.gameObject.SetActive(false);
+                        playerActive = 2;
+                        swapCooldown = defaultSwapCooldown;
+                        if (hasShiftedBefore == false) swapText.gameObject.SetActive(true);
+                        sprayCanOffUI.gameObject.SetActive(false);
+                        sprayCanOnUI.gameObject.SetActive(false);
+                        selectionText.gameObject.SetActive(false);
+                    }
                 }
             }
-        }
-        else if (playerActive == 2) //Swapping to real player
-        {
-            if (groundedSwap == false || (groundedSwap && graffitiPlayer.IsGrounded()))
+            else if (playerActive == 2) //Swapping to real player
             {
-                collisionCheck = Physics.CheckBox(graffitiPlayer.col.bounds.center, realPlayer.col.bounds.size * 0.5f, Quaternion.identity, toReal);
-                if (!collisionCheck)
+                if (groundedSwap == false || (groundedSwap && graffitiPlayer.IsGrounded()))
                 {
-                    realPlayer.transform.position = graffitiPlayer.col.bounds.center;
-                    realPlayer.gameObject.SetActive(true);
-                    graffitiPlayer.gameObject.SetActive(false);
-                    playerActive = 1;
-                    swapCooldown = defaultSwapCooldown;
-                    if (canGraffiti)
+                    collisionCheck = Physics.CheckBox(graffitiPlayer.col.bounds.center, realPlayer.col.bounds.size * 0.5f, Quaternion.identity, toReal);
+                    if (!collisionCheck)
                     {
-                        isPlayerNearGraffitiSpot();
-                        selectionText.gameObject.SetActive(true);
+                        realPlayer.transform.position = graffitiPlayer.col.bounds.center;
+                        realPlayer.gameObject.SetActive(true);
+                        graffitiPlayer.gameObject.SetActive(false);
+                        playerActive = 1;
+                        swapCooldown = defaultSwapCooldown;
+                        if (canGraffiti)
+                        {
+                            isPlayerNearGraffitiSpot();
+                            selectionText.gameObject.SetActive(true);
+                        }
                     }
                 }
             }
