@@ -22,6 +22,7 @@ public class SceneController : MonoBehaviour
     public MinigameManager coupleManager;
     public GameObject drawingMinigameCouple;
     [SerializeField] private GameObject graffitiTutorialNote;
+    [SerializeField] GameObject customTagMaker;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -365,11 +366,19 @@ public class SceneController : MonoBehaviour
             //controlIndicator.gameObject.SetActive(true);
 
         }
-        gameRunning = true;
-        realPlayer.rb.simulated = true;
-        graffitiPlayer.rb.simulated = true;
+        // gameRunning = true;
+        // realPlayer.rb.simulated = true;
+        // graffitiPlayer.rb.simulated = true;
         resumeButton.gameObject.SetActive(false);
         menuText.gameObject.SetActive(false);
+    }
+
+    public void EndCustomTagCreation()
+    {
+        gameRunning = true;
+        customTagMaker.SetActive(false);
+        realPlayer.rb.simulated = true;
+        graffitiPlayer.rb.simulated = true;
     }
 
     public void restartGame()

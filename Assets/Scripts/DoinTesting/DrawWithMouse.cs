@@ -10,6 +10,7 @@ public class DrawWithMouse : MonoBehaviour
     private LineRenderer line;
     private Vector3 previousPos;
     private bool doneDrawing;
+    private MinigameManager minigameManager;
 
     [SerializeField] GameObject nextLine;
     [SerializeField] float minDistance = 0.1f;
@@ -17,9 +18,11 @@ public class DrawWithMouse : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        minigameManager = FindObjectOfType<MinigameManager>();
         line = GetComponent<LineRenderer>();
         line.positionCount = 1;
         previousPos = transform.position;
+        minigameManager.lines.Add(gameObject);
     }
 
     // Update is called once per frame
@@ -47,8 +50,8 @@ public class DrawWithMouse : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            // Instantiate(nextLine);
-            // doneDrawing = true;
+            Instantiate(nextLine);
+            doneDrawing = true;
             Screenshotter.Instance.StartScreenshot();
         }
     }

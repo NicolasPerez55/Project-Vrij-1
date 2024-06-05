@@ -6,6 +6,7 @@ public class MinigameManager : MonoBehaviour
 {
     [SerializeField] GameObject paintDoneObj, MinigameObj;
     [SerializeField] SceneController scene;
+    public List<GameObject> lines = new List<GameObject>();
 
     public static MinigameManager Instance { get; private set; }
 
@@ -30,6 +31,10 @@ public class MinigameManager : MonoBehaviour
 
     public void PaintingComplete()
     {
+        foreach (GameObject go in lines)
+        {
+            Destroy(go);
+        }
         paintDoneObj.SetActive(false);
         MinigameObj.SetActive(false);
         scene.couplePuzzleDone();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     public SceneController scene;
     [SerializeField] Animator animator;
+    [SerializeField] Spotting spotting;
+    public GameObject customTagPrefab;
 
     [Space, Header("Movement Modifiers")]
     public float speed;
@@ -51,6 +54,12 @@ public class PlayerController : MonoBehaviour
         {
             //scene.makeGraffiti(currentGraffitiType);
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
+            tag.transform.localScale *= 0.3f;
+            tag.transform.parent = null;
+        }
         //Pause/Unpause game (Esc / Backspace)
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -87,6 +96,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Spotter") && scene.playerActive == 1)
+        {
+            spotting.teleportPlayer();
+        }
+
         switch (collision.gameObject.layer)
         {
             case 11: //background layer

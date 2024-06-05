@@ -24,14 +24,6 @@ public class Screenshotter : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StartScreenshot();
-        }
-    }
-
     IEnumerator RecordFrame()
     {
         yield return new WaitForEndOfFrame();
