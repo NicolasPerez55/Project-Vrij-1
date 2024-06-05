@@ -30,12 +30,12 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Meta")]
     [Tooltip("1 = Physical Form, 2 = Graffiti Form")]
     public int characterType = 0; //1 = real player, 2 = graffiti player
-    //public int currentGraffitiType = 1; //1 = platform, 2 = warp
+    public bool inFrontOfWall = true;
     private void Update()
     {
         CheckJump();
         //Swapping character (shift)
-        if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0)
+        if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0 && inFrontOfWall)
         {
             scene.switchCharacter();
         }
@@ -79,6 +79,30 @@ public class PlayerController : MonoBehaviour
             case 10:
                 if (characterType == 1)
                     collision.gameObject.GetComponent<pickupScript>().collided();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.gameObject.layer)
+        {
+            case 11: //background layer
+                scene.wallChange(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        switch (collision.gameObject.layer)
+        {
+            case 11: //background layer
+                scene.wallChange(false);
                 break;
             default:
                 break;

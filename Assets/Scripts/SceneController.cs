@@ -274,6 +274,16 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    public void wallChange(bool wallBehind)
+    {
+        realPlayer.inFrontOfWall = wallBehind;
+        graffitiPlayer.inFrontOfWall = wallBehind;
+        if (playerActive == 2 && wallBehind == false)
+        {
+            switchCharacter();
+        }
+    }
+
     //Triggered when the player picks up the paint spray
     public void getPaintspray()
     {
