@@ -366,9 +366,9 @@ public class SceneController : MonoBehaviour
             //controlIndicator.gameObject.SetActive(true);
 
         }
-        // gameRunning = true;
-        // realPlayer.rb.simulated = true;
-        // graffitiPlayer.rb.simulated = true;
+        gameRunning = true;
+        realPlayer.rb.simulated = true;
+        graffitiPlayer.rb.simulated = true;
         resumeButton.gameObject.SetActive(false);
         menuText.gameObject.SetActive(false);
     }

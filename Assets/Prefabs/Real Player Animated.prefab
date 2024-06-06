@@ -55,12 +55,15 @@ MonoBehaviour:
     m_Bits: 128
   scene: {fileID: 0}
   animator: {fileID: 4222462758552476104}
+  spotting: {fileID: 0}
+  customTagPrefab: {fileID: 0}
   speed: 5
   jumpForce: 5
   coyote: 0.2
   jumpBuffer: 0.2
   floorDetectionSize: 0.3
   characterType: 1
+  inFrontOfWall: 1
 --- !u!212 &2905102777775094895
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -145,7 +148,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0070726573, y: 0.01271072}
+  m_Offset: {x: -0.0070726573, y: 0.015810937}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -156,7 +159,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.34164447, y: 0.81762177}
+  m_Size: {x: 0.34164447, y: 0.81142133}
   m_EdgeRadius: 0
 --- !u!50 &8129939171161565547
 Rigidbody2D:
