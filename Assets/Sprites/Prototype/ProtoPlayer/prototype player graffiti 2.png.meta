@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 64965602b1308134196413ab7f7030a5
+guid: e3267620b277ee440aa91f9b67284ede
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acb4c292dfbc76c4ba4e5793812cf608
-      internalID: -493315936
+      spriteID: 6217dba747a6dee42971dd67257931a8
+      internalID: -533199854
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fab057290132bff44a9d65d1cd3cfeae
-      internalID: 1979654411
+      spriteID: 448ff1b58e98e634a9ca7c62199a582c
+      internalID: -493515153
       vertices: []
       indices: 
       edges: []
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 86f9ef86a674b9846a6ea6da7358e27b
-      internalID: 484815195
+      spriteID: 8343401376c6e7d41a8f53200b6a8a3c
+      internalID: -442519846
       vertices: []
       indices: 
       edges: []
@@ -187,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac98bcc2c5af428449d98b58fd66bb1b
-      internalID: 627038261
+      spriteID: a59c58dfbc5916e42bc14af4b1cd0287
+      internalID: 1661168336
       vertices: []
       indices: 
       edges: []
@@ -208,8 +208,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b8ac001a40c996243908cb620ebec080
-      internalID: 1909524620
+      spriteID: 48dbcac6c4af7e94491f85e8709af80c
+      internalID: 983344539
       vertices: []
       indices: 
       edges: []
@@ -229,8 +229,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 808343cf21baed045a991f5222a074c4
-      internalID: 951084297
+      spriteID: 66fe29192c48aa34f89e8f2d0eb23bf5
+      internalID: -1430280521
       vertices: []
       indices: 
       edges: []
@@ -250,8 +250,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e21ba31537ba316489293c5219dcbcb9
-      internalID: 302986676
+      spriteID: 985b22171c44eef448c24d39d25ef0f8
+      internalID: -2034088691
       vertices: []
       indices: 
       edges: []
@@ -271,8 +271,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f102654dcf4a1d4b9066dfd4e466fc4
-      internalID: 1296494374
+      spriteID: 246b9a98a2768b04a9ac681275d0d928
+      internalID: -1239840139
       vertices: []
       indices: 
       edges: []
@@ -292,8 +292,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05253e3ac103d0144a608a3c9dcf282a
-      internalID: 2037344257
+      spriteID: 31ba49ffc64c16f43bf090c17459a677
+      internalID: -195577797
       vertices: []
       indices: 
       edges: []
@@ -313,8 +313,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 460eab424a4fbd34fa7f5aa9e215bcb1
-      internalID: -1925269891
+      spriteID: 13e7d24b4ae8ab14ba7658c00615d6c8
+      internalID: -822030666
       vertices: []
       indices: 
       edges: []
@@ -330,16 +330,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      prototype player graffiti 2_0: -493315936
-      prototype player graffiti 2_1: 1979654411
-      prototype player graffiti 2_2: 484815195
-      prototype player graffiti 2_3: 627038261
-      prototype player graffiti 2_4: 1909524620
-      prototype player graffiti 2_5: 951084297
-      prototype player graffiti 2_6: 302986676
-      prototype player graffiti 2_7: 1296494374
-      prototype player graffiti 2_8: 2037344257
-      prototype player graffiti 2_9: -1925269891
+      prototype player graffiti 2_0: -533199854
+      prototype player graffiti 2_1: -493515153
+      prototype player graffiti 2_2: -442519846
+      prototype player graffiti 2_3: 1661168336
+      prototype player graffiti 2_4: 983344539
+      prototype player graffiti 2_5: -1430280521
+      prototype player graffiti 2_6: -2034088691
+      prototype player graffiti 2_7: -1239840139
+      prototype player graffiti 2_8: -195577797
+      prototype player graffiti 2_9: -822030666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
