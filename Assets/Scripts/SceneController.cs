@@ -51,7 +51,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private LayerMask toReal;
 
     [Space, Header("Swapping")]
-    public float defaultSwapCooldown = 1.2f;
+    public float defaultSwapCooldown = 0.3f;
     public float swapCooldown = 0;
     [Tooltip("If enabled, player can only swap forms while on the ground")]
     public bool groundedSwap = false; //Enable to forbid swapping in the air
@@ -249,6 +249,11 @@ public class SceneController : MonoBehaviour
                         sprayCanOffUI.gameObject.SetActive(false);
                         sprayCanOnUI.gameObject.SetActive(false);
                         selectionText.gameObject.SetActive(false);
+
+                        if (graffitiPlayer.facingRight != realPlayer.facingRight)
+                        {
+                            graffitiPlayer.changeFacingDirection();
+                        }
                     }
                 }
             }
@@ -268,6 +273,11 @@ public class SceneController : MonoBehaviour
                         {
                             isPlayerNearGraffitiSpot();
                             selectionText.gameObject.SetActive(true);
+                        }
+
+                        if (graffitiPlayer.facingRight != realPlayer.facingRight)
+                        {
+                            realPlayer.changeFacingDirection();
                         }
                     }
                 }

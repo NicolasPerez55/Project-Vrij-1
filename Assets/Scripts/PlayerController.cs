@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [Space, Header("Movement Modifiers")]
     public float speed;
     private float moveInput;
-    private bool facingRight = true;
+    public bool facingRight = true;
 
     // Jump-related variables
     [Space, Header("Jump Modifiers")]
