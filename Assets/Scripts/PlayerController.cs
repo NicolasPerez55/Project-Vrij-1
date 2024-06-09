@@ -75,24 +75,6 @@ public class PlayerController : MonoBehaviour
         changeFacingDirection();
     }
 
-    //Boosts the player up a bit, stalling them briefly in the air. Was used when placing a platform in the air in my original demo, keeping it in for now -Nico
-    /*public void BoostUp()
-    {
-        rb.velocity = Vector2.up * 2;
-    }*/
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        switch (collision.gameObject.layer)
-        {
-            case 10:
-                if (characterType == 1)
-                    collision.gameObject.GetComponent<pickupScript>().collided();
-                break;
-            default:
-                break;
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
