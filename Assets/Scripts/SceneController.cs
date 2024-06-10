@@ -99,8 +99,8 @@ public class SceneController : MonoBehaviour
                 swapCooldown -= Time.deltaTime;
                 if (swapCooldown < 0) swapCooldown = 0;
             }
-            if (swapCooldown == 0) swapText.text = "Swap ready! [SHIFT]";
-            else swapText.text = "Recharge in " + (int)swapCooldown;
+            if (swapCooldown == 0) swapText.text = "Swap[SHIFT]";
+            else swapText.text = "Wait " + (int)swapCooldown;
             
             if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false && playerActive == 1)
             {
