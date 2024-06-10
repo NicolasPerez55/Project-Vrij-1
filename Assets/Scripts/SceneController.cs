@@ -65,6 +65,7 @@ public class SceneController : MonoBehaviour
     private InteractableObject nearestInteractable; //the closest interactable to the player
     [SerializeField] private bool inRangeOfInteractable = false;
     public bool hasUsedFirstLift = false;
+    public bool hasUsedSecondLift = false;
 
 
     [Space, Header("Meta")]
@@ -233,17 +234,17 @@ public class SceneController : MonoBehaviour
                         graffitiPlayer.GetComponent<Rigidbody2D>().simulated = false;
                         currentCutscene = 2;
                         List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
-                        List<float> timers = new List<float>() { 0.5f };
+                        List<float> timers = new List<float>() { 0.25f };
                         List<float> zooms = new List<float>();
                         List<float> moveSpeed = new List<float>() { 0 };
-                        List<float> zoomSpeed = new List<float>() { 2.5f };
+                        List<float> zoomSpeed = new List<float>() { 5f };
 
-                        if (hasUsedFirstLift)
+                        if (hasUsedFirstLift && !hasUsedSecondLift)
                             zooms.Add(3.7f);
-                            //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
+                        else if (hasUsedSecondLift)
+                            zooms.Add(6.5f);
                         else
                             zooms.Add(2.5f);
-                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
                         cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (graffitiPlayer.facingRight != realPlayer.facingRight)
@@ -269,17 +270,17 @@ public class SceneController : MonoBehaviour
                         realPlayer.GetComponent<Rigidbody2D>().simulated = false;
                         currentCutscene = 2;
                         List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
-                        List<float> timers = new List<float>() { 0.5f };
+                        List<float> timers = new List<float>() { 0.25f }; //was 0.5
                         List<float> zooms = new List<float>();
                         List<float> moveSpeed = new List<float>() { 0 };
-                        List<float> zoomSpeed = new List<float>() { 2.5f };
+                        List<float> zoomSpeed = new List<float>() { 5f }; //was 2.5
 
-                        if (hasUsedFirstLift)
+                        if (hasUsedFirstLift && !hasUsedSecondLift)
                             zooms.Add(4.2f);
-                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
+                        else if (hasUsedSecondLift)
+                            zooms.Add(7f);
                         else
                             zooms.Add(3f);
-                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
                         cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (canGraffiti)

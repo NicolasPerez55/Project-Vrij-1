@@ -66,6 +66,12 @@ public class InteractableObject : MonoBehaviour
 
     private void liftInteraction()
     {
+        List<Vector2> destinations = new List<Vector2>();
+        List<float> timers = new List<float>();
+        List<float> zooms = new List<float>();
+        List<float> moveSpeed = new List<float>();
+        List<float> zoomSpeed = new List<float>();
+
         //Get the lift after this one
         InteractableObject nextLift;
         InteractableObject[] candidates = FindObjectsOfType<InteractableObject>();
@@ -86,14 +92,26 @@ public class InteractableObject : MonoBehaviour
 
                 scene.currentCutscene = 2;
                 cutsceneHandler.changeCamera(new Vector2(213.5f, -4), 3f);
-                List<Vector2> destinations = new List<Vector2>() { new Vector2(213.5f, 10), new Vector2(213.5f, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
-                List<float> timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
-                List<float> zooms = new List<float>() { 0, 9, 0, 3 };
-                List<float> moveSpeed = new List<float>() { 6, 6, 0, 0 };
-                List<float> zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
+                destinations = new List<Vector2>() { new Vector2(213.5f, 10), new Vector2(213.5f, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
+                zooms = new List<float>() { 0, 9, 0, 3 };
+                moveSpeed = new List<float>() { 6, 6, 0, 0 };
+                zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
                 cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
                 break;
             case 3:
+                scene.hasUsedSecondLift = true;
+                scene.realPlayer.transform.position = new Vector2(256.07f, 109.9119f);
+                scene.realPlayer.gameObject.SetActive(false);
+
+                scene.currentCutscene = 2;
+                cutsceneHandler.changeCamera(new Vector2(256.07f, 84.9119f), 4.2f);
+                destinations = new List<Vector2>() { new Vector2(256.07f, 110.9119f), Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                timers = new List<float>() { 9f, 1.5f};
+                zooms = new List<float>() { 7, 0};
+                moveSpeed = new List<float>() { 3, 0};
+                zoomSpeed = new List<float>() { 0.3f, 0};
+                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
                 break;
             default:
                 break;
