@@ -48,8 +48,16 @@ public class InteractableObject : MonoBehaviour
         switch (index)
         {
             case 1:
-                break;
-            case 2:
+                scene.realPlayer.transform.position = new Vector2(218, -5.088044f);
+                scene.realPlayer.gameObject.SetActive(false);
+                scene.currentCutscene = 2;
+                cutsceneHandler.changeCamera(new Vector2(155.65f, -2.588075f), 3f); //-1.588075 -4.088044
+                List<Vector2> destinations = new List<Vector2>() { Vector2.zero, new Vector2(218, -5.088044f), new Vector2(218, -4.088044f) };
+                List<float> timers = new List<float>() { 1.5f, 0.5f, 1.5f};
+                List<float> zooms = new List<float>() { 0.5f, 0, 3};
+                List<float> moveSpeed = new List<float>() { 0, 0, 1};
+                List<float> zoomSpeed = new List<float>() { 1.6f, 0, 1.6f};
+                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
                 break;
             default:
                 break;
@@ -72,12 +80,20 @@ public class InteractableObject : MonoBehaviour
         switch (index)
         {
             case 1:
-                break;
-            case 2:
+                scene.hasUsedFirstLift = true;
+                scene.realPlayer.transform.position = new Vector2(213.5f, 80.91189f);
+                scene.realPlayer.gameObject.SetActive(false);
+
+                scene.currentCutscene = 2;
+                cutsceneHandler.changeCamera(new Vector2(213.5f, -4), 3f);
+                List<Vector2> destinations = new List<Vector2>() { new Vector2(213.5f, 10), new Vector2(213.5f, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                List<float> timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
+                List<float> zooms = new List<float>() { 0, 9, 0, 3 };
+                List<float> moveSpeed = new List<float>() { 6, 6, 0, 0 };
+                List<float> zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
+                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
                 break;
             case 3:
-                break;
-            case 4:
                 break;
             default:
                 break;

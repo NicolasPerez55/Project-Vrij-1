@@ -60,10 +60,11 @@ public class SceneController : MonoBehaviour
     public float proximityThreshold = 1f; //How close player must be to graffiti to be able to interact with it
     private bool playerInMinigame = false;
 
-    [Space, Header("World")]
+    [Space, Header("World & Progression")]
     private bool coupleMinigameCompleted = false;
     private InteractableObject nearestInteractable; //the closest interactable to the player
     [SerializeField] private bool inRangeOfInteractable = false;
+    public bool hasUsedFirstLift = false;
 
 
     [Space, Header("Meta")]
@@ -116,13 +117,18 @@ public class SceneController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.P))
             {
                 Debug.Log("pressed P");
+                hasUsedFirstLift = true;
+                realPlayer.transform.position = new Vector2(213, 80.91189f);
+                realPlayer.gameObject.SetActive(false);
+
                 currentCutscene = 2;
-                List<Vector2> destinations = new List<Vector2>() { new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15) }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
-                List<float> timers = new List<float>() { 3, 4, 5};
-                List<float> zooms = new List<float>() { 2, 4, 7};
-                List<float> moveSpeed = new List<float>() { 1, 2, 3 };
-                List<float> zoomSpeed = new List<float>() { 0.1f, 0.2f, 0.3f };
-                cutsceneHandler.startCutscene(timers,destinations,zooms,moveSpeed,zoomSpeed);
+                cutsceneHandler.changeCamera(new Vector2(213, -4), 3f);
+                List<Vector2> destinations = new List<Vector2>() { new Vector2(213, 10), new Vector2(213, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                List<float> timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
+                List<float> zooms = new List<float>() { 0, 9, 0, 3 };
+                List<float> moveSpeed = new List<float>() { 6, 6, 0, 0 };
+                List<float> zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
+                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
             }
         }
     }
@@ -224,7 +230,10 @@ public class SceneController : MonoBehaviour
                         sprayCanOnUI.gameObject.SetActive(false);
                         selectionText.gameObject.SetActive(false);
 
-                        cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
+                        if (hasUsedFirstLift)
+                            cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
+                        else
+                            cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
 
                         if (graffitiPlayer.facingRight != realPlayer.facingRight)
                         {
@@ -246,7 +255,10 @@ public class SceneController : MonoBehaviour
                         playerActive = 1;
                         swapCooldown = defaultSwapCooldown;
 
-                        cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 3f);
+                        if (hasUsedFirstLift)
+                            cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 4.2f);
+                        else
+                            cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 3f);
 
                         if (canGraffiti)
                         {

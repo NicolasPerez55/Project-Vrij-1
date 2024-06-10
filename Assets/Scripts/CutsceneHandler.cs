@@ -64,6 +64,10 @@ public class CutsceneHandler : MonoBehaviour
                     if (currentStage >= totalStages) //end of the cutscene reached
                     {
                         scene.currentCutscene = 0;
+                        if (scene.playerActive == 1)
+                            scene.realPlayer.gameObject.SetActive(true);
+                        else
+                            scene.graffitiPlayer.gameObject.SetActive(true);
                         Debug.Log("Cutscene ended!");
                         //cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 3f;
                     }
@@ -75,7 +79,14 @@ public class CutsceneHandler : MonoBehaviour
                 if (scene.currentCutscene != 0)
                 {
                     if (cameraDestinations[currentStage] != Vector2.zero)
-                        cameraPoint.transform.position = Vector2.MoveTowards(cameraPoint.transform.position, cameraDestinations[currentStage], cameraMoveSpeed[currentStage] * Time.deltaTime);
+                    {
+                        if (cameraMoveSpeed[currentStage] == 0)
+                        {
+                            cameraPoint.transform.position = cameraDestinations[currentStage];
+                        }
+                        else
+                            cameraPoint.transform.position = Vector2.MoveTowards(cameraPoint.transform.position, cameraDestinations[currentStage], cameraMoveSpeed[currentStage] * Time.deltaTime);
+                    }
                     if (cameraZooms[currentStage] < cameraPoint.GetComponentInChildren<Camera>().orthographicSize && cameraZooms[currentStage] != 0) //size decreases, zooms in
                     {
                         cameraPoint.GetComponentInChildren<Camera>().orthographicSize -= cameraZoomSpeed[currentStage] * Time.deltaTime;
