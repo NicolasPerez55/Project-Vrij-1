@@ -11,9 +11,10 @@ public class SceneController : MonoBehaviour
     public CutsceneHandler cutsceneHandler;
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
+    public List<InteractableObject> interactables = new List<InteractableObject>();
 
     //Couple puzzle stuff
-    public GameObject graffitiSpot;
+    public GameObject nextGraffitiSpot; //CHANGE THIS VARIABLE BASED ON PLAYER'S PROGRESS THROUGH THE LEVEL
     public GameObject couple;
     public Sprite happyCouple;
     public GameObject brokenHeart;
@@ -21,6 +22,8 @@ public class SceneController : MonoBehaviour
     public MinigameManager coupleManager;
     public GameObject drawingMinigameCouple;
     [SerializeField] GameObject customTagMaker;
+    [SerializeField] MinigameManager customTagMinigame;
+    [SerializeField] CustomScreenshotter customScreenshotter;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -31,6 +34,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Image sprayCanOffUI;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button endTagButton;
 
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
@@ -55,19 +60,24 @@ public class SceneController : MonoBehaviour
     public float proximityThreshold = 1f; //How close player must be to graffiti to be able to interact with it
     private bool playerInMinigame = false;
 
-    [Space, Header("World")]
+    [Space, Header("World & Progression")]
     private bool coupleMinigameCompleted = false;
+    private InteractableObject nearestInteractable; //the closest interactable to the player
+    [SerializeField] private bool inRangeOfInteractable = false;
+    public bool hasUsedFirstLift = false;
+    public bool hasUsedSecondLift = false;
+
 
     [Space, Header("Meta")]
     public bool gameRunning = false;
     public bool gameHasStarted = false;
-    //public bool gameWon = false;
     public int currentCutscene = 0; //0 = standard gameplay. Updated in SceneController and CutsceneHandler
 
     void Start()
     {
         realPlayer.rb.simulated = false;
         graffitiPlayer.rb.simulated = false;
+        nearestInteractable = FindFirstObjectByType<InteractableObject>();
     }
 
 
@@ -82,39 +92,67 @@ public class SceneController : MonoBehaviour
             if (playerActive == 1 && playerInMinigame == false)
             {
                 if (canGraffiti) isPlayerNearGraffitiSpot();
+                checkNearestInteractable();
             }
             if (swapCooldown > 0)
             {
                 swapCooldown -= Time.deltaTime;
                 if (swapCooldown < 0) swapCooldown = 0;
             }
-            if (swapCooldown == 0) swapText.text = "Swap ready! [SHIFT]";
-            else swapText.text = "Recharge in " + (int)swapCooldown;
+            if (swapCooldown == 0) swapText.text = "Swap[SHIFT]";
+            else swapText.text = "Wait " + (int)swapCooldown;
             
-            if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false)
+            if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false && playerActive == 1)
             {
-                makeGraffiti();
+                //Attempt to graffiti. If fail, attempt to interact with an object
+                if (makeGraffiti() == false)
+                {
+                    if (inRangeOfInteractable)
+                    {
+                        nearestInteractable.interactedWith();
+                    }
+                }
+            }
+
+            //just a test of the cutscene function
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Debug.Log("pressed P");
+                hasUsedFirstLift = true;
+                realPlayer.transform.position = new Vector2(213, 80.91189f);
+                realPlayer.gameObject.SetActive(false);
+
+                currentCutscene = 2;
+                cutsceneHandler.changeCamera(new Vector2(213, -4), 3f);
+                List<Vector2> destinations = new List<Vector2>() { new Vector2(213, 10), new Vector2(213, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                List<float> timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
+                List<float> zooms = new List<float>() { 0, 9, 0, 3 };
+                List<float> moveSpeed = new List<float>() { 6, 6, 0, 0 };
+                List<float> zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
+                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
             }
         }
     }
 
-    public void makeGraffiti() //1 = platform, 2 = warp
+    public bool makeGraffiti()
     {
-        if (playerActive == 1 && playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
+        if (playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
         {
             currentCutscene = 1;
             coupleManager.StartMinigameOne();
             playerInMinigame = true;
             cutsceneHandler.changeCamera(new Vector2(drawingMinigameCouple.transform.position.x, drawingMinigameCouple.transform.position.y + cameraOffset), 5f);
-            
+            return true;
+
         }
+        else return false;
     }
 
     //NOTE! This is currently very hardcoded and only for the one puzzle, tis a Wizard-Of-Oz setup for the demo, to be changed later
     public void isPlayerNearGraffitiSpot()
     {
         //player is close enough
-        if (Vector2.Distance(realPlayer.transform.position, graffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
+        if (Vector2.Distance(realPlayer.transform.position, nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
         {
             playerNearGraffiti = true;
             sprayCanOffUI.gameObject.SetActive(false);
@@ -130,12 +168,30 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    public void checkNearestInteractable()
+    {
+        for (int x = 0; x < interactables.Count; x++)
+        {
+            if (Vector2.Distance(interactables[x].transform.position, realPlayer.transform.position) <= Vector2.Distance(nearestInteractable.transform.position, realPlayer.transform.position))
+            {
+                nearestInteractable = interactables[x];
+            }
+            interactables[x].prompt.SetActive(false);
+        }
+        if (Vector2.Distance(nearestInteractable.transform.position, realPlayer.transform.position) < 1)
+        {
+            inRangeOfInteractable = true;
+            nearestInteractable.prompt.SetActive(true);
+        }
+        else inRangeOfInteractable = false;
+    }
+
     public void couplePuzzleDone()
     {
         fullHeart.SetActive(true);
         couple.GetComponent<SpriteRenderer>().sprite = happyCouple;
         couple.GetComponent<BoxCollider2D>().isTrigger = true;
-        graffitiSpot.SetActive(false);
+        nextGraffitiSpot.SetActive(false);
         playerInMinigame = false;
         cutsceneHandler.changeCamera(realPlayer.transform.position, 3f);
         currentCutscene = 0;
@@ -175,7 +231,21 @@ public class SceneController : MonoBehaviour
                         sprayCanOnUI.gameObject.SetActive(false);
                         selectionText.gameObject.SetActive(false);
 
-                        cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
+                        graffitiPlayer.GetComponent<Rigidbody2D>().simulated = false;
+                        currentCutscene = 2;
+                        List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
+                        List<float> timers = new List<float>() { 0.25f };
+                        List<float> zooms = new List<float>();
+                        List<float> moveSpeed = new List<float>() { 0 };
+                        List<float> zoomSpeed = new List<float>() { 5f };
+
+                        if (hasUsedFirstLift && !hasUsedSecondLift)
+                            zooms.Add(3.7f);
+                        else if (hasUsedSecondLift)
+                            zooms.Add(6.5f);
+                        else
+                            zooms.Add(2.5f);
+                        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (graffitiPlayer.facingRight != realPlayer.facingRight)
                         {
@@ -197,7 +267,21 @@ public class SceneController : MonoBehaviour
                         playerActive = 1;
                         swapCooldown = defaultSwapCooldown;
 
-                        cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 3f);
+                        realPlayer.GetComponent<Rigidbody2D>().simulated = false;
+                        currentCutscene = 2;
+                        List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
+                        List<float> timers = new List<float>() { 0.25f }; //was 0.5
+                        List<float> zooms = new List<float>();
+                        List<float> moveSpeed = new List<float>() { 0 };
+                        List<float> zoomSpeed = new List<float>() { 5f }; //was 2.5
+
+                        if (hasUsedFirstLift && !hasUsedSecondLift)
+                            zooms.Add(4.2f);
+                        else if (hasUsedSecondLift)
+                            zooms.Add(7f);
+                        else
+                            zooms.Add(3f);
+                        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (canGraffiti)
                         {
@@ -243,7 +327,7 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    //Unpauses / starts the game
+    //Unpauses the game
     public void resumeGame()
     {
         //Some initial game setup
@@ -269,15 +353,32 @@ public class SceneController : MonoBehaviour
         menuText.gameObject.SetActive(false);
     }
 
+    // starts the game and tag creation
+    public void StartCustomTagCreation()
+    {
+        gameHasStarted = true;
+        customTagMaker.gameObject.SetActive(true);
+        startButton.gameObject.SetActive(false);
+        endTagButton.gameObject.SetActive(true);
+        menuText.gameObject.SetActive(false);
+    }
+
+    public void MakeTag()
+    {
+        customScreenshotter.MakeTag();
+    }
+
+    // ends the tag creation and activates player
     public void EndCustomTagCreation()
     {
         gameRunning = true;
-        customTagMaker.SetActive(false);
+        customTagMinigame.TagComplete();
+        endTagButton.gameObject.SetActive(false);
         realPlayer.rb.simulated = true;
         graffitiPlayer.rb.simulated = true;
     }
 
-    public void restartGame()
+    public void restartGame() // Hi Doin here i think we should just reload the scene instead of all this
     {
         restartButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(false);

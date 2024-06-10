@@ -14,7 +14,7 @@ public class NewSpawn : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (checkpoint <= spotting.currentSpawnPoint)
+        if (checkpoint >= spotting.currentSpawnPoint)
         {
             spotting.currentSpawnPoint++;
         }

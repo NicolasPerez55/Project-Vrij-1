@@ -37,29 +37,21 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CheckJump();
+
         //Swapping character (shift)
         if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0 && inFrontOfWall)
         {
             scene.switchCharacter();
         }
-        //Swapping graffiti type (control) (CURRENTLY UNUSED)
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-        {
-            //if (currentGraffitiType == 1) currentGraffitiType = 2;
-            //else if (currentGraffitiType == 2) currentGraffitiType = 1;
-            //scene.updateSelectionUI(currentGraffitiType);
-        }
-        //Make Graffiti (E) (CURRENTLY UNUSED)
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            //scene.makeGraffiti(currentGraffitiType);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
+        
+        //Make tag
+        if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1)
         {
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
             tag.transform.parent = null;
         }
+
         //Pause/Unpause game (Esc / Backspace)
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -80,7 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Spotter") && scene.playerActive == 1)
         {
-            spotting.teleportPlayer();
+            spotting.PlayerSpotted();
         }
 
         switch (collision.gameObject.layer)

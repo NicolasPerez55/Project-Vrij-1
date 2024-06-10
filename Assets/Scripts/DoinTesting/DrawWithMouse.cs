@@ -10,7 +10,8 @@ public class DrawWithMouse : MonoBehaviour
     private LineRenderer line;
     private Vector3 previousPos;
     private bool doneDrawing;
-    private MinigameManager minigameManager;
+    public MinigameManager minigameManager;
+    public Screenshotter screenshotter;
 
     [SerializeField] GameObject nextLine;
     [SerializeField] float minDistance = 0.1f;
@@ -18,11 +19,14 @@ public class DrawWithMouse : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        minigameManager = FindObjectOfType<MinigameManager>();
         line = GetComponent<LineRenderer>();
         line.positionCount = 1;
         previousPos = transform.position;
         minigameManager.lines.Add(gameObject);
+        if (minigameManager.screenshotter != null)
+        {
+            screenshotter = minigameManager.screenshotter;
+        }
     }
 
     // Update is called once per frame
@@ -51,8 +55,13 @@ public class DrawWithMouse : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             Instantiate(nextLine);
+            DrawWithMouse line = nextLine.GetComponent<DrawWithMouse>();
+            line.minigameManager = minigameManager;
             doneDrawing = true;
-            Screenshotter.Instance.StartScreenshot();
+            if (screenshotter != null)
+            {
+                screenshotter.StartScreenshot();
+            }
         }
     }
 
@@ -62,15 +71,15 @@ public class DrawWithMouse : MonoBehaviour
         Vector3 currentMousePos = Input.mousePosition;
         currentMousePos.z = 0;
         Color colorPixel = texture.GetPixel((int)currentMousePos.x, (int)currentMousePos.y);
-        // Color colorPixel = texture.GetPixel((int)Input.mousePosition.x, (int)Input.mousePosition.y);
+        Debug.Log(colorPixel);
         return colorPixel;
     }
 
     private bool IsDrawingOnWhite(Color pixelColor)
     {
 
-        //if (pixelColor.r > 0.9 && pixelColor.g > 0.9 && pixelColor.b > 0.9)
-        //    return true;
+        if (pixelColor.r > 0.99 && pixelColor.g > 0.99 && pixelColor.b > 0.99)
+            return true;
         if (pixelColor == Color.white)
             return true;
 
