@@ -7,11 +7,21 @@ public class Spotting : MonoBehaviour
 {
     [SerializeField] List<Transform> spawnPoints = new List<Transform>();
     [SerializeField] GameObject player;
-    public static event Action onPlayerSpotted;
+    [SerializeField] PlayerController playerController;
     public int currentSpawnPoint = 0;
-
-    public void teleportPlayer()
+    IEnumerator PlayerCaught()
     {
-        player.transform.position = spawnPoints[currentSpawnPoint].position;
+        // Police Drones Fly By
+        // Fade to Black
+        playerController.speed = 0;
+        yield return new WaitForSeconds(1);
+        player.transform.position = spawnPoints[currentSpawnPoint].position; // TP's player
+        playerController.speed = 5;
+        // Screen Fades back in
+    }
+
+    public void PlayerSpotted()
+    {
+        StartCoroutine(PlayerCaught());
     }
 }

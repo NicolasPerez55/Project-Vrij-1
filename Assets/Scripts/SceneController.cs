@@ -21,6 +21,8 @@ public class SceneController : MonoBehaviour
     public MinigameManager coupleManager;
     public GameObject drawingMinigameCouple;
     [SerializeField] GameObject customTagMaker;
+    [SerializeField] MinigameManager customTagMinigame;
+    [SerializeField] CustomScreenshotter customScreenshotter;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -31,6 +33,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Image sprayCanOffUI;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button endTagButton;
 
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
@@ -243,7 +247,7 @@ public class SceneController : MonoBehaviour
         }
     }
 
-    //Unpauses / starts the game
+    //Unpauses the game
     public void resumeGame()
     {
         //Some initial game setup
@@ -269,15 +273,32 @@ public class SceneController : MonoBehaviour
         menuText.gameObject.SetActive(false);
     }
 
+    // starts the game and tag creation
+    public void StartCustomTagCreation()
+    {
+        gameHasStarted = true;
+        customTagMaker.gameObject.SetActive(true);
+        startButton.gameObject.SetActive(false);
+        endTagButton.gameObject.SetActive(true);
+        menuText.gameObject.SetActive(false);
+    }
+
+    public void MakeTag()
+    {
+        customScreenshotter.MakeTag();
+    }
+
+    // ends the tag creation and activates player
     public void EndCustomTagCreation()
     {
         gameRunning = true;
-        customTagMaker.SetActive(false);
+        customTagMinigame.TagComplete();
+        endTagButton.gameObject.SetActive(false);
         realPlayer.rb.simulated = true;
         graffitiPlayer.rb.simulated = true;
     }
 
-    public void restartGame()
+    public void restartGame() // Hi Doin here i think we should just reload the scene instead of all this
     {
         restartButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(false);

@@ -8,22 +8,7 @@ using UnityEngine.PlayerLoop;
 public class Screenshotter : MonoBehaviour
 {
     [SerializeField] MinigameManager minigameManager;
-    public static Screenshotter Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(this);
-            // You could also log a warning.
-        }
-    }
-
+    [SerializeField] int puzzleID;
     IEnumerator RecordFrame()
     {
         yield return new WaitForEndOfFrame();
@@ -53,7 +38,8 @@ public class Screenshotter : MonoBehaviour
         int whitePixelCount = 0;
         foreach (Color32 pixel in pixels)
         {
-            if (pixel.g == 255 && pixel.r == 255 && pixel.b == 255)
+            if (pixel.r > 0.99 && pixel.g > 0.99 && pixel.b > 0.99)
+
             {
                 whitePixelCount++;
             }
@@ -64,7 +50,10 @@ public class Screenshotter : MonoBehaviour
 
         if (pixelRatio < 1f)
         {
-            minigameManager.PaintingComplete();
+            if (puzzleID == 1)
+            {
+                minigameManager.CoupleComplete();
+            }
         }
     }
 }

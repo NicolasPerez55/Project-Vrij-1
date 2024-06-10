@@ -18,14 +18,6 @@ public class CustomScreenshotter : MonoBehaviour
         sceneController = FindObjectOfType<SceneController>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I)) // MAKE THIS INSTEAD A BUTTON A PLAYER CAN PRESS WHEN THEY'RE DONE DRAWING
-        {
-            MakeTag();
-        }
-    }
-
     IEnumerator RecordFrame()
     {
         yield return new WaitForEndOfFrame();
@@ -35,7 +27,7 @@ public class CustomScreenshotter : MonoBehaviour
 
         for (int i = 0; i < pixels.Length; i++)
         {
-            if (pixels[i] == Color.white)
+            if (pixels[i].r < 0.99 ||  pixels[i].g > 0.01 || pixels[i].b > 0.01)
             {
                 pixels[i] = new Color(0, 0, 0, 0);
             }

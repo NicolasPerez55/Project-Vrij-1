@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             //scene.makeGraffiti(currentGraffitiType);
         }
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1)
         {
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Spotter") && scene.playerActive == 1)
         {
-            spotting.teleportPlayer();
+            spotting.PlayerSpotted();
         }
 
         switch (collision.gameObject.layer)
