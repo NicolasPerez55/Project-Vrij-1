@@ -230,10 +230,21 @@ public class SceneController : MonoBehaviour
                         sprayCanOnUI.gameObject.SetActive(false);
                         selectionText.gameObject.SetActive(false);
 
+                        graffitiPlayer.GetComponent<Rigidbody2D>().simulated = false;
+                        currentCutscene = 2;
+                        List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
+                        List<float> timers = new List<float>() { 0.5f };
+                        List<float> zooms = new List<float>();
+                        List<float> moveSpeed = new List<float>() { 0 };
+                        List<float> zoomSpeed = new List<float>() { 2.5f };
+
                         if (hasUsedFirstLift)
-                            cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
+                            zooms.Add(3.7f);
+                            //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
                         else
-                            cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
+                            zooms.Add(2.5f);
+                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
+                        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (graffitiPlayer.facingRight != realPlayer.facingRight)
                         {
@@ -255,10 +266,21 @@ public class SceneController : MonoBehaviour
                         playerActive = 1;
                         swapCooldown = defaultSwapCooldown;
 
+                        realPlayer.GetComponent<Rigidbody2D>().simulated = false;
+                        currentCutscene = 2;
+                        List<Vector2> destinations = new List<Vector2>() { Vector2.zero };
+                        List<float> timers = new List<float>() { 0.5f };
+                        List<float> zooms = new List<float>();
+                        List<float> moveSpeed = new List<float>() { 0 };
+                        List<float> zoomSpeed = new List<float>() { 2.5f };
+
                         if (hasUsedFirstLift)
-                            cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 4.2f);
+                            zooms.Add(4.2f);
+                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 3.7f);
                         else
-                            cutsceneHandler.changeCamera(new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + cameraOffset), 3f);
+                            zooms.Add(3f);
+                        //cutsceneHandler.changeCamera(new Vector2(graffitiPlayer.transform.position.x, graffitiPlayer.transform.position.y + cameraOffset), 2.5f);
+                        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
 
                         if (canGraffiti)
                         {

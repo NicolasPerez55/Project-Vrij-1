@@ -65,9 +65,15 @@ public class CutsceneHandler : MonoBehaviour
                     {
                         scene.currentCutscene = 0;
                         if (scene.playerActive == 1)
+                        {
                             scene.realPlayer.gameObject.SetActive(true);
+                            scene.realPlayer.GetComponent<Rigidbody2D>().simulated = true;
+                        }
                         else
+                        {
                             scene.graffitiPlayer.gameObject.SetActive(true);
+                            scene.graffitiPlayer.GetComponent<Rigidbody2D>().simulated = true;
+                        }
                         Debug.Log("Cutscene ended!");
                         //cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 3f;
                     }
