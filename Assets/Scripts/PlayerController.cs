@@ -43,27 +43,9 @@ public class PlayerController : MonoBehaviour
         {
             scene.switchCharacter();
         }
-<<<<<<< Updated upstream
-        //Swapping graffiti type (control) (CURRENTLY UNUSED)
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-        {
-            //if (currentGraffitiType == 1) currentGraffitiType = 2;
-            //else if (currentGraffitiType == 2) currentGraffitiType = 1;
-            //scene.updateSelectionUI(currentGraffitiType);
-        }
-        //Make Graffiti (E) (CURRENTLY UNUSED)
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            //scene.makeGraffiti(currentGraffitiType);
-        }
+        
+        //Make tag
         if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1)
-=======
-
-        //MAKING GRAFFITI IS HANDLED IN THE SCENECONTROLLER
-
-        //Place a tag
-        if (Input.GetKeyDown(KeyCode.T))
->>>>>>> Stashed changes
         {
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
