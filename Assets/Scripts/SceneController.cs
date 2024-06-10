@@ -111,6 +111,19 @@ public class SceneController : MonoBehaviour
                     }
                 }
             }
+
+            //just a test of the cutscene function
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                Debug.Log("pressed P");
+                currentCutscene = 2;
+                List<Vector2> destinations = new List<Vector2>() { new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15) }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
+                List<float> timers = new List<float>() { 3, 4, 5};
+                List<float> zooms = new List<float>() { 2, 4, 7};
+                List<float> moveSpeed = new List<float>() { 1, 2, 3 };
+                List<float> zoomSpeed = new List<float>() { 0.1f, 0.2f, 0.3f };
+                cutsceneHandler.startCutscene(timers,destinations,zooms,moveSpeed,zoomSpeed);
+            }
         }
     }
 
