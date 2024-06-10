@@ -7,6 +7,8 @@ public class CutsceneHandler : MonoBehaviour
     [SerializeField] private GameObject cameraPoint;
     [SerializeField] private SceneController scene;
 
+    public float cutsceneTimer = 0;
+
     public void startCutscene()
     {
 
@@ -27,6 +29,12 @@ public class CutsceneHandler : MonoBehaviour
                 }
                 break;
             case 1: //Player is in a minigame, don't move the camera
+                break;
+            case 2: //Cutscene of door #1
+                break;
+            case 3: //Cutscene of lift #1
+                break;
+            case 4: //Cutscene of lift #2
                 break;
             default:
                 break;

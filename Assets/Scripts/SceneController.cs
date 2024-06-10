@@ -11,9 +11,10 @@ public class SceneController : MonoBehaviour
     public CutsceneHandler cutsceneHandler;
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
+    public List<InteractableObject> interactables = new List<InteractableObject>();
 
     //Couple puzzle stuff
-    public GameObject graffitiSpot;
+    public GameObject nextGraffitiSpot; //CHANGE THIS VARIABLE BASED ON PLAYER'S PROGRESS THROUGH THE LEVEL
     public GameObject couple;
     public Sprite happyCouple;
     public GameObject brokenHeart;
@@ -61,17 +62,20 @@ public class SceneController : MonoBehaviour
 
     [Space, Header("World")]
     private bool coupleMinigameCompleted = false;
+    private InteractableObject nearestInteractable; //the closest interactable to the player
+    [SerializeField] private bool inRangeOfInteractable = false;
+
 
     [Space, Header("Meta")]
     public bool gameRunning = false;
     public bool gameHasStarted = false;
-    //public bool gameWon = false;
     public int currentCutscene = 0; //0 = standard gameplay. Updated in SceneController and CutsceneHandler
 
     void Start()
     {
         realPlayer.rb.simulated = false;
         graffitiPlayer.rb.simulated = false;
+        nearestInteractable = FindFirstObjectByType<InteractableObject>();
     }
 
 
@@ -86,6 +90,7 @@ public class SceneController : MonoBehaviour
             if (playerActive == 1 && playerInMinigame == false)
             {
                 if (canGraffiti) isPlayerNearGraffitiSpot();
+                checkNearestInteractable();
             }
             if (swapCooldown > 0)
             {
@@ -95,30 +100,39 @@ public class SceneController : MonoBehaviour
             if (swapCooldown == 0) swapText.text = "Swap ready! [SHIFT]";
             else swapText.text = "Recharge in " + (int)swapCooldown;
             
-            if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false)
+            if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false && playerActive == 1)
             {
-                makeGraffiti();
+                //Attempt to graffiti. If fail, attempt to interact with an object
+                if (makeGraffiti() == false)
+                {
+                    if (inRangeOfInteractable)
+                    {
+                        nearestInteractable.interactedWith();
+                    }
+                }
             }
         }
     }
 
-    public void makeGraffiti() //1 = platform, 2 = warp
+    public bool makeGraffiti()
     {
-        if (playerActive == 1 && playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
+        if (playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
         {
             currentCutscene = 1;
             coupleManager.StartMinigameOne();
             playerInMinigame = true;
             cutsceneHandler.changeCamera(new Vector2(drawingMinigameCouple.transform.position.x, drawingMinigameCouple.transform.position.y + cameraOffset), 5f);
-            
+            return true;
+
         }
+        else return false;
     }
 
     //NOTE! This is currently very hardcoded and only for the one puzzle, tis a Wizard-Of-Oz setup for the demo, to be changed later
     public void isPlayerNearGraffitiSpot()
     {
         //player is close enough
-        if (Vector2.Distance(realPlayer.transform.position, graffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
+        if (Vector2.Distance(realPlayer.transform.position, nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
         {
             playerNearGraffiti = true;
             sprayCanOffUI.gameObject.SetActive(false);
@@ -134,12 +148,30 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    public void checkNearestInteractable()
+    {
+        for (int x = 0; x < interactables.Count; x++)
+        {
+            if (Vector2.Distance(interactables[x].transform.position, realPlayer.transform.position) <= Vector2.Distance(nearestInteractable.transform.position, realPlayer.transform.position))
+            {
+                nearestInteractable = interactables[x];
+            }
+            interactables[x].prompt.SetActive(false);
+        }
+        if (Vector2.Distance(nearestInteractable.transform.position, realPlayer.transform.position) < 1)
+        {
+            inRangeOfInteractable = true;
+            nearestInteractable.prompt.SetActive(true);
+        }
+        else inRangeOfInteractable = false;
+    }
+
     public void couplePuzzleDone()
     {
         fullHeart.SetActive(true);
         couple.GetComponent<SpriteRenderer>().sprite = happyCouple;
         couple.GetComponent<BoxCollider2D>().isTrigger = true;
-        graffitiSpot.SetActive(false);
+        nextGraffitiSpot.SetActive(false);
         playerInMinigame = false;
         cutsceneHandler.changeCamera(realPlayer.transform.position, 3f);
         currentCutscene = 0;

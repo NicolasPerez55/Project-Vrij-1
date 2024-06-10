@@ -37,11 +37,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CheckJump();
+
         //Swapping character (shift)
         if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0 && inFrontOfWall)
         {
             scene.switchCharacter();
         }
+<<<<<<< Updated upstream
         //Swapping graffiti type (control) (CURRENTLY UNUSED)
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
         {
@@ -55,11 +57,19 @@ public class PlayerController : MonoBehaviour
             //scene.makeGraffiti(currentGraffitiType);
         }
         if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1)
+=======
+
+        //MAKING GRAFFITI IS HANDLED IN THE SCENECONTROLLER
+
+        //Place a tag
+        if (Input.GetKeyDown(KeyCode.T))
+>>>>>>> Stashed changes
         {
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
             tag.transform.parent = null;
         }
+
         //Pause/Unpause game (Esc / Backspace)
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
