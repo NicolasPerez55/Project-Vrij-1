@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public BoxCollider2D col;
     [SerializeField] private LayerMask whatIsGround;
     public SceneController scene;
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
     [SerializeField] Spotting spotting;
     public GameObject customTagPrefab;
 
@@ -36,16 +36,15 @@ public class PlayerController : MonoBehaviour
     public bool inFrontOfWall = true;
     private void Update()
     {
-        CheckJump();
-
+        if (scene.currentCutscene == 0) CheckJump();
         //Swapping character (shift)
-        if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0 && inFrontOfWall)
+        if ((Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) && scene.swapCooldown <= 0 && inFrontOfWall && scene.canSwap)
         {
             scene.switchCharacter();
         }
         
         //Make tag
-        if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1)
+        if (Input.GetKeyDown(KeyCode.T) && inFrontOfWall && characterType == 1 && scene.currentCutscene == 0)
         {
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
@@ -62,8 +61,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
-        AnimatorMovement();
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        if (scene.currentCutscene == 0) AnimatorMovement();
+        if (scene.currentCutscene == 0) rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
         changeFacingDirection();
     }
 
@@ -81,6 +80,8 @@ public class PlayerController : MonoBehaviour
                 scene.wallChange(true);
                 break;
             case 12: //trigger
+                Debug.Log("Trigger entered");
+                collision.gameObject.GetComponent<TriggerScript>().activate();
                 break;
             default:
                 break;
@@ -153,13 +154,13 @@ public class PlayerController : MonoBehaviour
 
     public void changeFacingDirection()
     {
-        if (!facingRight && moveInput > 0 || facingRight && moveInput < 0)
+        if ((!facingRight && moveInput > 0 || facingRight && moveInput < 0) && scene.currentCutscene == 0)
         {
             facingRight = !facingRight;
             Vector2 localscale = transform.localScale;
             localscale.x *= -1f;
             transform.localScale = localscale;
-            customTagPrefab.transform.localScale = new Vector3(customTagPrefab.transform.localScale.x * -1, customTagPrefab.transform.localScale.y, customTagPrefab.transform.localScale.z);
+            //customTagPrefab.transform.localScale = new Vector3(customTagPrefab.transform.localScale.x * -1, customTagPrefab.transform.localScale.y, customTagPrefab.transform.localScale.z);
         }
     }
 

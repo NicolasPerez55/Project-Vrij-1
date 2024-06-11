@@ -102,6 +102,9 @@ public class CutsceneHandler : MonoBehaviour
                     }
                 }
                 break;
+            case 3: //used in the powers cutscene
+                cameraPoint.transform.position = new Vector2(scene.realPlayer.transform.position.x, scene.realPlayer.transform.position.y);
+                break;
             default:
                 break;
         }

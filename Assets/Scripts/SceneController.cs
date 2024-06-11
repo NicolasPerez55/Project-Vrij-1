@@ -25,9 +25,11 @@ public class SceneController : MonoBehaviour
     [SerializeField] MinigameManager customTagMinigame;
     [SerializeField] CustomScreenshotter customScreenshotter;
 
+    public GameObject shiftTutorialPrompt;
+
     //A bunch of UI stuff
     [Header("UI Prefabs")]
-    [SerializeField] private TextMeshProUGUI swapText;
+    public TextMeshProUGUI swapText;
     [SerializeField] private TextMeshProUGUI selectionText;
     [SerializeField] private TextMeshProUGUI menuText;
     [SerializeField] private Image sprayCanOnUI;
@@ -61,6 +63,7 @@ public class SceneController : MonoBehaviour
     private bool playerInMinigame = false;
 
     [Space, Header("World & Progression")]
+    public bool canSwap = false;
     private bool coupleMinigameCompleted = false;
     private InteractableObject nearestInteractable; //the closest interactable to the player
     [SerializeField] private bool inRangeOfInteractable = false;
@@ -99,9 +102,9 @@ public class SceneController : MonoBehaviour
                 swapCooldown -= Time.deltaTime;
                 if (swapCooldown < 0) swapCooldown = 0;
             }
-            if (swapCooldown == 0) swapText.text = "Swap[SHIFT]";
-            else swapText.text = "Wait " + (int)swapCooldown;
-            
+            if (swapCooldown == 0) swapText.text = "Swap [SHIFT]";
+            else swapText.text = "Swap [SHIFT]";//"Wait "+ (int)swapCooldown;
+
             if (Input.GetKeyDown(KeyCode.E) && playerInMinigame == false && playerActive == 1)
             {
                 //Attempt to graffiti. If fail, attempt to interact with an object
@@ -226,7 +229,13 @@ public class SceneController : MonoBehaviour
                         playerActive = 2;
 
                         swapCooldown = defaultSwapCooldown;
-                        if (hasShiftedBefore == false) swapText.gameObject.SetActive(true);
+                        if (hasShiftedBefore == false)
+                        {
+                            shiftTutorialPrompt.SetActive(false);
+                            currentCutscene = 0;
+                            canSwap = false;
+                            hasShiftedBefore = true;
+                        }
                         sprayCanOffUI.gameObject.SetActive(false);
                         sprayCanOnUI.gameObject.SetActive(false);
                         selectionText.gameObject.SetActive(false);
