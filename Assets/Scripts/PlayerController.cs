@@ -80,6 +80,8 @@ public class PlayerController : MonoBehaviour
             case 11: //background layer
                 scene.wallChange(true);
                 break;
+            case 12: //trigger
+                break;
             default:
                 break;
         }
@@ -157,6 +159,7 @@ public class PlayerController : MonoBehaviour
             Vector2 localscale = transform.localScale;
             localscale.x *= -1f;
             transform.localScale = localscale;
+            customTagPrefab.transform.localScale = new Vector3(customTagPrefab.transform.localScale.x * -1, customTagPrefab.transform.localScale.y, customTagPrefab.transform.localScale.z);
         }
     }
 

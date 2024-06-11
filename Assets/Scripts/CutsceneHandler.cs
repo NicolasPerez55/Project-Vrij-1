@@ -75,7 +75,6 @@ public class CutsceneHandler : MonoBehaviour
                             scene.graffitiPlayer.GetComponent<Rigidbody2D>().simulated = true;
                         }
                         Debug.Log("Cutscene ended!");
-                        //cameraPoint.GetComponentInChildren<Camera>().orthographicSize = 3f;
                     }
                     else
                     {
