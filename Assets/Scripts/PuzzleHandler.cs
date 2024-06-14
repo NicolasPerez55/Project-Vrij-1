@@ -11,6 +11,12 @@ public class PuzzleHandler : MonoBehaviour
     public int gameProgressStage = 0; //0 = no minigames, 1 = tree done, 2 = eye done, 3 = couple done, 4 = cat done
 
     //tree stuff
+    [SerializeField] private GameObject filledTree;
+    [SerializeField] private GameObject treeStub;
+    [SerializeField] private GameObject unfilledWater;
+    [SerializeField] private MinigameManager treeManager;
+    [SerializeField] private GameObject drawingMinigameTree;
+    [SerializeField] private bool treeMinigameCompleted;
 
     //eye stuff
 
@@ -37,6 +43,7 @@ public class PuzzleHandler : MonoBehaviour
         switch (gameProgressStage)
         {
             case 0: //Tree puzzle
+                treeManager.StartMinigameOne();
                 break;
             case 1: //Eye puzzle
                 break;
@@ -59,6 +66,16 @@ public class PuzzleHandler : MonoBehaviour
 
     public void treePuzzleDone()
     {
+        filledTree.SetActive(true);
+        treeStub.SetActive(false);
+        unfilledWater.SetActive(false);
+
+        nextGraffitiSpot.SetActive(false);
+        scene.playerInMinigame = false;
+        scene.cutsceneHandler.changeCamera(scene.realPlayer.transform.position, 3f);
+        scene.currentCutscene = 0;
+        treeMinigameCompleted = true;
+
         gameProgressStage += 1;
         changeNextGraffitiSpot();
     }
