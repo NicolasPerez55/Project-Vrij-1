@@ -11,6 +11,7 @@ public class MinigameManager : MonoBehaviour
 
     public void StartMinigameOne()
     {
+        scene.cutsceneHandler.changeCamera(MinigameObj.transform.position, 2.5f);
         MinigameObj.SetActive(true);
     }
 
@@ -22,7 +23,7 @@ public class MinigameManager : MonoBehaviour
         }
         paintDoneObj.SetActive(false);
         MinigameObj.SetActive(false);
-        scene.couplePuzzleDone();
+        scene.puzzleHandler.couplePuzzleDone();
     }
 
     public void TagComplete()

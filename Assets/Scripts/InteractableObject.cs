@@ -9,6 +9,7 @@ public class InteractableObject : MonoBehaviour
     public int index = 1; //Each object of a specific type gets a different index to separate them. Linked objects (doors, lifts) get adjacent indexes
     private CutsceneHandler cutsceneHandler;
     private SceneController scene;
+    public bool inactive = false;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class InteractableObject : MonoBehaviour
 
     public void interactedWith()
     {
+        if (!inactive)
         switch (type)
         {
             case 1: //door

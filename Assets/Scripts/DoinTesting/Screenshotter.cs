@@ -29,28 +29,31 @@ public class Screenshotter : MonoBehaviour
         int redPixelCount = 0;
         foreach (Color32 pixel in pixels)
         {
-            if (pixel.g == 0 && pixel.r == 255 && pixel.b == 0)
+            if (pixel.g < 0.1f && pixel.r > 0.9f && pixel.b < 0.1f)
             {
                 redPixelCount++;
             }
         }
+        Debug.Log("Red Pixels: " + redPixelCount);
 
         int whitePixelCount = 0;
         foreach (Color32 pixel in pixels)
         {
-            if (pixel.r > 0.99 && pixel.g > 0.99 && pixel.b > 0.99)
+            if (pixel.r > 250 && pixel.g > 250 && pixel.b > 250)
 
             {
                 whitePixelCount++;
             }
         }
+        Debug.Log("White Pixels: " + whitePixelCount);
 
         float pixelRatio = whitePixelCount / (redPixelCount + 1.0f);
         Debug.Log(pixelRatio);
 
         if (pixelRatio < 1f)
         {
-            if (puzzleID == 1)
+            minigameManager.CoupleComplete();
+            if (puzzleID == 3)
             {
                 minigameManager.CoupleComplete();
             }

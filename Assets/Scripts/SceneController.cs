@@ -12,20 +12,13 @@ public class SceneController : MonoBehaviour
     public PlayerController realPlayer;
     public PlayerController graffitiPlayer;
     public List<InteractableObject> interactables = new List<InteractableObject>();
+    public List<GameObject> graffitiSpots = new List<GameObject>();
+    public PuzzleHandler puzzleHandler;
 
-    //Couple puzzle stuff
-    public GameObject nextGraffitiSpot; //CHANGE THIS VARIABLE BASED ON PLAYER'S PROGRESS THROUGH THE LEVEL
-    public GameObject couple;
-    public Sprite happyCouple;
-    public GameObject brokenHeart;
-    public GameObject fullHeart;
-    public MinigameManager coupleManager;
-    public GameObject drawingMinigameCouple;
+    //Minigame / tagging stuff
     [SerializeField] GameObject customTagMaker;
     [SerializeField] MinigameManager customTagMinigame;
     [SerializeField] CustomScreenshotter customScreenshotter;
-
-    public GameObject shiftTutorialPrompt;
 
     //A bunch of UI stuff
     [Header("UI Prefabs")]
@@ -38,6 +31,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button startButton;
     [SerializeField] private Button endTagButton;
+    public GameObject shiftTutorialPrompt;
 
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
@@ -60,16 +54,14 @@ public class SceneController : MonoBehaviour
     public bool canGraffiti = true;
     public bool playerNearGraffiti = false;
     public float proximityThreshold = 1f; //How close player must be to graffiti to be able to interact with it
-    private bool playerInMinigame = false;
+    public bool playerInMinigame = false;
 
     [Space, Header("World & Progression")]
     public bool canSwap = false;
-    private bool coupleMinigameCompleted = false;
     private InteractableObject nearestInteractable; //the closest interactable to the player
     [SerializeField] private bool inRangeOfInteractable = false;
     public bool hasUsedFirstLift = false;
     public bool hasUsedSecondLift = false;
-
 
     [Space, Header("Meta")]
     public bool gameRunning = false;
@@ -139,14 +131,12 @@ public class SceneController : MonoBehaviour
 
     public bool makeGraffiti()
     {
-        if (playerNearGraffiti && coupleMinigameCompleted == false) //Player is in the real world and can graffiti
+        if (playerNearGraffiti) //Player is in the real world and can graffiti
         {
             currentCutscene = 1;
-            coupleManager.StartMinigameOne();
             playerInMinigame = true;
-            cutsceneHandler.changeCamera(new Vector2(drawingMinigameCouple.transform.position.x, drawingMinigameCouple.transform.position.y + cameraOffset), 5f);
+            puzzleHandler.startMinigame();
             return true;
-
         }
         else return false;
     }
@@ -155,7 +145,7 @@ public class SceneController : MonoBehaviour
     public void isPlayerNearGraffitiSpot()
     {
         //player is close enough
-        if (Vector2.Distance(realPlayer.transform.position, nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && coupleMinigameCompleted == false)
+        if (Vector2.Distance(realPlayer.transform.position, puzzleHandler.nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && puzzleHandler.coupleMinigameCompleted == false)
         {
             playerNearGraffiti = true;
             sprayCanOffUI.gameObject.SetActive(false);
@@ -189,18 +179,7 @@ public class SceneController : MonoBehaviour
         else inRangeOfInteractable = false;
     }
 
-    public void couplePuzzleDone()
-    {
-        fullHeart.SetActive(true);
-        couple.GetComponent<SpriteRenderer>().sprite = happyCouple;
-        couple.GetComponent<BoxCollider2D>().isTrigger = true;
-        nextGraffitiSpot.SetActive(false);
-        playerInMinigame = false;
-        cutsceneHandler.changeCamera(realPlayer.transform.position, 3f);
-        currentCutscene = 0;
-        coupleMinigameCompleted = true;
-        //graffitiTutorialNote.SetActive(false);
-    }
+    
 
     public void warpPlayer(GameObject destination)
     {
