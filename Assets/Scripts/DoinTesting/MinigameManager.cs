@@ -15,6 +15,28 @@ public class MinigameManager : MonoBehaviour
         MinigameObj.SetActive(true);
     }
 
+    public void TreeComplete()
+    {
+        foreach (GameObject go in lines)
+        {
+            Destroy(go);
+        }
+        paintDoneObj.SetActive(false);
+        MinigameObj.SetActive(false);
+        scene.puzzleHandler.treePuzzleDone();
+    }
+
+    public void EyeComplete()
+    {
+        foreach (GameObject go in lines)
+        {
+            Destroy(go);
+        }
+        paintDoneObj.SetActive(false);
+        MinigameObj.SetActive(false);
+        scene.puzzleHandler.eyePuzzleDone();
+    }
+
     public void CoupleComplete()
     {
         foreach (GameObject go in lines)
@@ -24,6 +46,17 @@ public class MinigameManager : MonoBehaviour
         paintDoneObj.SetActive(false);
         MinigameObj.SetActive(false);
         scene.puzzleHandler.couplePuzzleDone();
+    }
+
+    public void CatComplete()
+    {
+        foreach (GameObject go in lines)
+        {
+            Destroy(go);
+        }
+        paintDoneObj.SetActive(false);
+        MinigameObj.SetActive(false);
+        scene.puzzleHandler.catPuzzleDone();
     }
 
     public void TagComplete()

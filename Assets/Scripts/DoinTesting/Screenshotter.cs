@@ -52,10 +52,22 @@ public class Screenshotter : MonoBehaviour
 
         if (pixelRatio < 1f)
         {
-            minigameManager.CoupleComplete();
-            if (puzzleID == 3)
+            switch (puzzleID)
             {
-                minigameManager.CoupleComplete();
+                case 1:
+                    minigameManager.TreeComplete();
+                    break;
+                case 2:
+                    minigameManager.EyeComplete();
+                    break;
+                case 3:
+                    minigameManager.CoupleComplete();
+                    break;
+                case 4:
+                    minigameManager.CatComplete();
+                    break;
+                default:
+                    break;
             }
         }
     }

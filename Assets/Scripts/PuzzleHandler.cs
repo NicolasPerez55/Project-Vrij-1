@@ -10,6 +10,10 @@ public class PuzzleHandler : MonoBehaviour
     public GameObject nextGraffitiSpot; //CHANGE THIS VARIABLE BASED ON PLAYER'S PROGRESS THROUGH THE LEVEL
     public int gameProgressStage = 0; //0 = no minigames, 1 = tree done, 2 = eye done, 3 = couple done, 4 = cat done
 
+    //tree stuff
+
+    //eye stuff
+
     //Couple stuff
     public GameObject couple;
     public Sprite happyCouple;
@@ -26,6 +30,7 @@ public class PuzzleHandler : MonoBehaviour
     [SerializeField] private MinigameManager catManager;
     [SerializeField] private GameObject drawingMinigameCat;
     [SerializeField] private bool catMinigameCompleted;
+    [SerializeField] private InteractableObject lastLift;
 
     public void startMinigame()
     {
@@ -40,20 +45,28 @@ public class PuzzleHandler : MonoBehaviour
                 //scene.cutsceneHandler.changeCamera(new Vector2(drawingMinigameCouple.transform.position.x, drawingMinigameCouple.transform.position.y + scene.cameraOffset), 5f);
                 break;
             case 3: //Cat puzzle
+                catManager.StartMinigameOne();
                 break;
             default:
                 break;
         }
     }
 
+    public void changeNextGraffitiSpot()
+    {
+        nextGraffitiSpot = scene.graffitiSpots[gameProgressStage];
+    }
+
     public void treePuzzleDone()
     {
         gameProgressStage += 1;
+        changeNextGraffitiSpot();
     }
 
     public void eyePuzzleDone()
     {
         gameProgressStage += 1;
+        changeNextGraffitiSpot();
     }
 
     public void couplePuzzleDone()
@@ -61,6 +74,7 @@ public class PuzzleHandler : MonoBehaviour
         fullHeart.SetActive(true);
         couple.GetComponent<SpriteRenderer>().sprite = happyCouple;
         couple.GetComponent<BoxCollider2D>().isTrigger = true;
+
         nextGraffitiSpot.SetActive(false);
         scene.playerInMinigame = false;
         scene.cutsceneHandler.changeCamera(scene.realPlayer.transform.position, 3f);
@@ -68,10 +82,22 @@ public class PuzzleHandler : MonoBehaviour
         coupleMinigameCompleted = true;
         //graffitiTutorialNote.SetActive(false);
         gameProgressStage += 1;
+        changeNextGraffitiSpot();
     }
 
     public void catPuzzleDone()
     {
+        potato.transform.position = new Vector2(258, 83.7f);
+        unfilledCat.SetActive(false);
+        filledCat.SetActive(true);
+        lastLift.inactive = false;
+
+        nextGraffitiSpot.SetActive(false);
+        scene.playerInMinigame = false;
+        scene.cutsceneHandler.changeCamera(scene.realPlayer.transform.position, 3f);
+        scene.currentCutscene = 0;
+        catMinigameCompleted = true;
         gameProgressStage += 1;
+        changeNextGraffitiSpot();
     }
 }
