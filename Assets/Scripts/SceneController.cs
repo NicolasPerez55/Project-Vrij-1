@@ -145,7 +145,7 @@ public class SceneController : MonoBehaviour
     public void isPlayerNearGraffitiSpot()
     {
         //player is close enough
-        if (Vector2.Distance(realPlayer.transform.position, puzzleHandler.nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1 && puzzleHandler.coupleMinigameCompleted == false)
+        if (Vector2.Distance(realPlayer.transform.position, puzzleHandler.nextGraffitiSpot.transform.position) <= proximityThreshold && playerActive == 1)
         {
             playerNearGraffiti = true;
             sprayCanOffUI.gameObject.SetActive(false);

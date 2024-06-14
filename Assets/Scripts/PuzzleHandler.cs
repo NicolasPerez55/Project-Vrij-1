@@ -19,6 +19,13 @@ public class PuzzleHandler : MonoBehaviour
     [SerializeField] private bool treeMinigameCompleted;
 
     //eye stuff
+    [SerializeField] private GameObject cameraVision;
+    [SerializeField] private GameObject openEye;
+    [SerializeField] private GameObject closedEye;
+    [SerializeField] private GameObject filledZ;
+    [SerializeField] private MinigameManager eyeManager;
+    [SerializeField] private GameObject drawingMinigameEye;
+    [SerializeField] private bool eyeMinigameCompleted;
 
     //Couple stuff
     public GameObject couple;
@@ -46,6 +53,7 @@ public class PuzzleHandler : MonoBehaviour
                 treeManager.StartMinigameOne();
                 break;
             case 1: //Eye puzzle
+                eyeManager.StartMinigameOne();
                 break;
             case 2: //Couple puzzle
                 coupleManager.StartMinigameOne();
@@ -82,6 +90,17 @@ public class PuzzleHandler : MonoBehaviour
 
     public void eyePuzzleDone()
     {
+        cameraVision.SetActive(false);
+        openEye.SetActive(false);
+        closedEye.SetActive(true);
+        filledZ.SetActive(true);
+
+        nextGraffitiSpot.SetActive(false);
+        scene.playerInMinigame = false;
+        scene.cutsceneHandler.changeCamera(scene.realPlayer.transform.position, 3f);
+        scene.currentCutscene = 0;
+        eyeMinigameCompleted = true;
+
         gameProgressStage += 1;
         changeNextGraffitiSpot();
     }
