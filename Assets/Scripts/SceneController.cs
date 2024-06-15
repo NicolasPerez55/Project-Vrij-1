@@ -364,6 +364,7 @@ public class SceneController : MonoBehaviour
         endTagButton.gameObject.SetActive(false);
         realPlayer.rb.simulated = true;
         graffitiPlayer.rb.simulated = true;
+        selectionText.gameObject.SetActive(true);
     }
 
     public void restartGame() // Hi Doin here i think we should just reload the scene instead of all this

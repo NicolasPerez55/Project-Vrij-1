@@ -39,7 +39,7 @@ public class CustomScreenshotter : MonoBehaviour
         Sprite sprite = Sprite.Create(tagTexture, new Rect(0, 0, tagTexture.width, tagTexture.height), new Vector2(0.5f, 0.5f));
         SpriteRenderer prefabRenderer = playerController.customTagPrefab.GetComponent<SpriteRenderer>();
         prefabRenderer.sprite = sprite;
-        prefabRenderer.transform.localScale *= 0.5f;
+        //prefabRenderer.transform.localScale *= 0.5f;
         sceneController.EndCustomTagCreation();
     }
 

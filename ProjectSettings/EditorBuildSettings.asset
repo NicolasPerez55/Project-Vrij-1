@@ -17,7 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/FINAL SCENE.unity
     guid: aa9740f3bd2ecdb41a9b21a07d1e4b7b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Nico's Testing Scene.unity
     guid: b161e9d9b696f614a9e187dfb398c8de
+  - enabled: 1
+    path: Assets/Scenes/FINAL FINAL SCENE.unity
+    guid: e2b938ab0e873b44c881d2e2a27bbc14
   m_configObjects: {}
