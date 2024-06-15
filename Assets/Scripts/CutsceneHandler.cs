@@ -75,13 +75,19 @@ public class CutsceneHandler : MonoBehaviour
                             scene.graffitiPlayer.GetComponent<Rigidbody2D>().simulated = true;
                         }
                         Debug.Log("Cutscene ended!");
+                        scene.realPlayer.jumpForce = 5; //TO STOP THE PLAYER JUMPING AT THE START CUTSCNEE, WHY THE FRICK DOES THAT HAPPEN AAAAAAA anyways so I set their jumpforce to start super low, and gets set to normal here
+                        if (scene.inFinalRoom)
+                        {
+                            scene.endTheGame();
+                            scene.currentCutscene = 1;
+                        }
                     }
                     else
                     {
                         cutsceneTimer = stageTimers[currentStage];
                     }
                 }
-                if (scene.currentCutscene != 0)
+                if (scene.currentCutscene == 2)
                 {
                     if (cameraDestinations[currentStage] != Vector2.zero)
                     {

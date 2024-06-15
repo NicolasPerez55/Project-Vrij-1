@@ -62,6 +62,8 @@ public class SceneController : MonoBehaviour
     [SerializeField] private bool inRangeOfInteractable = false;
     public bool hasUsedFirstLift = false;
     public bool hasUsedSecondLift = false;
+    public bool inFinalRoom = false;
+    public bool gameBeaten = false;
 
     [Space, Header("Meta")]
     public bool gameRunning = false;
@@ -108,24 +110,14 @@ public class SceneController : MonoBehaviour
                     }
                 }
             }
-
-            //just a test of the cutscene function
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                Debug.Log("pressed P");
-                hasUsedFirstLift = true;
-                realPlayer.transform.position = new Vector2(213, 80.91189f);
-                realPlayer.gameObject.SetActive(false);
-
-                currentCutscene = 2;
-                cutsceneHandler.changeCamera(new Vector2(213, -4), 3f);
-                List<Vector2> destinations = new List<Vector2>() { new Vector2(213, 10), new Vector2(213, 82), Vector2.zero, Vector2.zero }; //[new Vector2(5, 5), new Vector2(12, 5), new Vector2(12, 15)]
-                List<float> timers = new List<float>() { 2.3f, 12f, 1.5f, 3 };
-                List<float> zooms = new List<float>() { 0, 9, 0, 3 };
-                List<float> moveSpeed = new List<float>() { 6, 6, 0, 0 };
-                List<float> zoomSpeed = new List<float>() { 0, 0.45f, 0, 1.4f };
-                cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
-            }
+        }
+        //Pause/Unpause game (Esc / Backspace)
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
+        {
+            if (gameBeaten)
+                Application.Quit();
+            else
+                pauseGame();
         }
     }
 
@@ -178,8 +170,6 @@ public class SceneController : MonoBehaviour
         }
         else inRangeOfInteractable = false;
     }
-
-    
 
     public void warpPlayer(GameObject destination)
     {
@@ -356,6 +346,26 @@ public class SceneController : MonoBehaviour
         customScreenshotter.MakeTag();
     }
 
+    //Triggered when the player places their final tag
+    public void finalCutscene()
+    {
+        currentCutscene = 2;
+        List<Vector2> destinations = new List<Vector2>() { Vector2.zero, new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + 7), new Vector2(realPlayer.transform.position.x, realPlayer.transform.position.y + 20) };
+        List<float> timers = new List<float>() { 1.5f, 3f, 7f };
+        List<float> zooms = new List<float>() { 0, 10, 10};
+        List<float> moveSpeed = new List<float>() { 0, 0.3f, 1.2f};
+        List<float> zoomSpeed = new List<float>() { 0, 0.1f, 0.3f};
+        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
+    }
+
+    public void endTheGame()
+    {
+        gameBeaten = true;
+        menuText.gameObject.SetActive(true);
+        menuText.color = Color.cyan;
+        menuText.text = "Congratulations! \nYou have reached the end of the game. Thanks to you, the city will wake up with a little more color than before... \n \nPress ESC now to close the game.";
+    }
+
     // ends the tag creation and activates player
     public void EndCustomTagCreation()
     {
@@ -365,6 +375,19 @@ public class SceneController : MonoBehaviour
         realPlayer.rb.simulated = true;
         graffitiPlayer.rb.simulated = true;
         selectionText.gameObject.SetActive(true);
+        //MakeTag();
+
+        cutsceneHandler.changeCamera(realPlayer.transform.position, 1f);
+        currentCutscene = 2;
+        realPlayer.animator.SetBool("isJumping", false);
+        realPlayer.animator.SetFloat("xVelocity", 0);
+        realPlayer.animator.SetFloat("yVelocity", 0);
+        List<Vector2> destinations = new List<Vector2>() { Vector2.zero, Vector2.zero };
+        List<float> timers = new List<float>() { 1f, 1.5f};
+        List<float> zooms = new List<float>() { 0, 3 };
+        List<float> moveSpeed = new List<float>() { 0, 0 };
+        List<float> zoomSpeed = new List<float>() { 0, 1.3f };
+        cutsceneHandler.startCutscene(timers, destinations, zooms, moveSpeed, zoomSpeed);
     }
 
     public void restartGame() // Hi Doin here i think we should just reload the scene instead of all this

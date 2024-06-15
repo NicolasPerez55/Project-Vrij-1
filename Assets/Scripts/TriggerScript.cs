@@ -28,7 +28,8 @@ public class TriggerScript : MonoBehaviour
                     scene.canSwap = true;
                     scene.swapText.gameObject.SetActive(true);
                     break;
-                case 3: //End Cinematic
+                case 3: //Checks for the end of the game
+                    scene.inFinalRoom = true;
                     break;
                 default:
                     break;

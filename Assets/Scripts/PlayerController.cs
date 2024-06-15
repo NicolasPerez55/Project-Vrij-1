@@ -49,12 +49,10 @@ public class PlayerController : MonoBehaviour
             GameObject tag = Instantiate(customTagPrefab, gameObject.transform);
             tag.transform.localScale *= 0.3f;
             tag.transform.parent = null;
-        }
-
-        //Pause/Unpause game (Esc / Backspace)
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
-        {
-            scene.pauseGame();
+            if (scene.inFinalRoom) //trigger ending
+            {
+                scene.finalCutscene();
+            }
         }
     }
 
