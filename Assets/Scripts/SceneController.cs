@@ -32,6 +32,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button endTagButton;
     public GameObject shiftTutorialPrompt;
+    [SerializeField] GameObject customTagUI;
 
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
@@ -49,6 +50,7 @@ public class SceneController : MonoBehaviour
     [Tooltip("If enabled, player can only swap forms while on the ground")]
     public bool groundedSwap = false; //Enable to forbid swapping in the air
     private bool hasShiftedBefore = false;
+    [SerializeField] AudioSource swapSound;
 
     [Space, Header("Graffiti-ing")]
     public bool canGraffiti = true;
@@ -194,6 +196,7 @@ public class SceneController : MonoBehaviour
                     {
                         graffitiPlayer.transform.position = realPlayer.col.bounds.center;
                         graffitiPlayer.gameObject.SetActive(true);
+                        swapSound.Play();
                         realPlayer.gameObject.SetActive(false);
                         playerActive = 2;
 
@@ -241,6 +244,7 @@ public class SceneController : MonoBehaviour
                     {
                         realPlayer.transform.position = graffitiPlayer.col.bounds.center;
                         realPlayer.gameObject.SetActive(true);
+                        swapSound.Play();
                         graffitiPlayer.gameObject.SetActive(false);
                         playerActive = 1;
                         swapCooldown = defaultSwapCooldown;
@@ -335,6 +339,7 @@ public class SceneController : MonoBehaviour
     public void StartCustomTagCreation()
     {
         gameHasStarted = true;
+        customTagUI.SetActive(true);
         customTagMaker.gameObject.SetActive(true);
         startButton.gameObject.SetActive(false);
         endTagButton.gameObject.SetActive(true);
@@ -343,6 +348,7 @@ public class SceneController : MonoBehaviour
 
     public void MakeTag()
     {
+        customTagUI.SetActive(false);
         customScreenshotter.MakeTag();
     }
 
