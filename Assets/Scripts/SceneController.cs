@@ -33,6 +33,7 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Button endTagButton;
     public GameObject shiftTutorialPrompt;
     [SerializeField] GameObject customTagUI;
+    [SerializeField] GameObject endText;
 
     [Header("Player")]
     public int playerActive = 1; //1 = realPlayer, 2 = graffitiPlayer
@@ -367,9 +368,9 @@ public class SceneController : MonoBehaviour
     public void endTheGame()
     {
         gameBeaten = true;
-        menuText.gameObject.SetActive(true);
-        menuText.color = Color.cyan;
-        menuText.text = "Congratulations! \nYou have reached the end of the game. Thanks to you, the city will wake up with a little more color than before... \n \nPress ESC now to close the game.";
+        //menuText.gameObject.SetActive(true);
+        //menuText.color = Color.white;
+        //menuText.text = "Congratulations! \nYou have reached the end of the game. Thanks to you, the city will wake up with a little more color than before... \n \nPress ESC now to close the game.";
     }
 
     // ends the tag creation and activates player
