@@ -67,6 +67,7 @@ public class SceneController : MonoBehaviour
     public bool hasUsedSecondLift = false;
     public bool inFinalRoom = false;
     public bool gameBeaten = false;
+    [SerializeField] GameObject secretWall;
 
     [Space, Header("Meta")]
     public bool gameRunning = false;
@@ -117,10 +118,11 @@ public class SceneController : MonoBehaviour
         //Pause/Unpause game (Esc / Backspace)
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
+            /*
             if (gameBeaten)
                 Application.Quit();
             else
-                pauseGame();
+                pauseGame();*/
         }
     }
 
@@ -208,6 +210,7 @@ public class SceneController : MonoBehaviour
                             currentCutscene = 0;
                             canSwap = false;
                             hasShiftedBefore = true;
+                            secretWall.SetActive(true);
                         }
                         sprayCanOffUI.gameObject.SetActive(false);
                         sprayCanOnUI.gameObject.SetActive(false);
@@ -245,7 +248,7 @@ public class SceneController : MonoBehaviour
                     {
                         realPlayer.transform.position = graffitiPlayer.col.bounds.center;
                         realPlayer.gameObject.SetActive(true);
-                        swapSound.Play();
+                        //swapSound.Play();
                         graffitiPlayer.gameObject.SetActive(false);
                         playerActive = 1;
                         swapCooldown = defaultSwapCooldown;
@@ -351,6 +354,7 @@ public class SceneController : MonoBehaviour
     {
         customTagUI.SetActive(false);
         customScreenshotter.MakeTag();
+        swapSound.Play();
     }
 
     //Triggered when the player places their final tag

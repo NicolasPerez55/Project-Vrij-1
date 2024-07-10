@@ -26,6 +26,12 @@ public class CutsceneHandler : MonoBehaviour
 
     All lists should be the same length. If not, the smallest list will be used to determine how many total stages the cutscene will have
     */
+
+    private void Start()
+    {
+        Debug.Log(cameraPoint.GetComponentInChildren<Camera>().pixelHeight);
+        Debug.Log(cameraPoint.GetComponentInChildren<Camera>().pixelWidth);
+    }
     public void startCutscene(List<float> timers, List<Vector2> destinations, List<float> zooms, List<float> moveSpeed, List<float> zoomSpeed)
     {
         Debug.Log("Cutscene started!");

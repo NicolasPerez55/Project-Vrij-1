@@ -10838,14 +10838,12 @@ MonoBehaviour:
   cutsceneHandler: {fileID: 0}
   realPlayer: {fileID: 728905354}
   graffitiPlayer: {fileID: 256799520}
-  graffitiSpot: {fileID: 779715842}
-  couple: {fileID: 1415448384}
-  happyCouple: {fileID: 21300000, guid: 771d0951414f86449988ec26679e4ddd, type: 3}
-  brokenHeart: {fileID: 881690844}
-  fullHeart: {fileID: 1013307539}
-  coupleManager: {fileID: 1246327079}
-  drawingMinigameCouple: {fileID: 1241494573}
+  interactables: []
+  graffitiSpots: []
+  puzzleHandler: {fileID: 0}
   customTagMaker: {fileID: 0}
+  customTagMinigame: {fileID: 0}
+  customScreenshotter: {fileID: 0}
   swapText: {fileID: 1751918128}
   selectionText: {fileID: 2101466209}
   menuText: {fileID: 1907940061}
@@ -10853,6 +10851,9 @@ MonoBehaviour:
   sprayCanOffUI: {fileID: 1875825094}
   resumeButton: {fileID: 1946208493}
   restartButton: {fileID: 1624233194}
+  startButton: {fileID: 0}
+  endTagButton: {fileID: 0}
+  shiftTutorialPrompt: {fileID: 0}
   playerActive: 1
   cameraOffset: 1
   toGraffiti:
@@ -10867,6 +10868,13 @@ MonoBehaviour:
   canGraffiti: 0
   playerNearGraffiti: 0
   proximityThreshold: 1
+  playerInMinigame: 0
+  canSwap: 0
+  inRangeOfInteractable: 0
+  hasUsedFirstLift: 0
+  hasUsedSecondLift: 0
+  inFinalRoom: 0
+  gameBeaten: 0
   gameRunning: 0
   gameHasStarted: 0
   currentCutscene: 0
@@ -11820,7 +11828,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.53, y: 0.85, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1054959556}
@@ -13955,7 +13963,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.24414062, y: 0.24414062}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 5, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -14000,7 +14008,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.24414062, y: 0.24414062}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 5, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -14045,7 +14053,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.24414062, y: 0.24414062}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 5, y: 5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -16353,17 +16361,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5528561010838899996, guid: 1917429e8416c024588ad8e34da3cb87, type: 3}
   m_PrefabInstance: {fileID: 1246327077}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1246327079 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6948424891503813298, guid: 1917429e8416c024588ad8e34da3cb87, type: 3}
-  m_PrefabInstance: {fileID: 1246327077}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e278877e050ecc94fb56bcc5ea03b8cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1260299165
 GameObject:
   m_ObjectHideFlags: 0
@@ -38961,7 +38958,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.6, y: -2.75, z: 0}
-  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
+  m_LocalScale: {x: 0.97, y: 0.97, z: 0.97}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1054959556}
